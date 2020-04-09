@@ -45,10 +45,6 @@ public class Clyde extends Ghost {
         return SHYNESS;
     }
 
-    public static Map<Direction, Direction> getOPPOSITES() {
-        return OPPOSITES;
-    }
-
     /**
      * The amount of cells Clyde wants to stay away from Pac Man.
      */
@@ -66,24 +62,12 @@ public class Clyde extends Ghost {
     private static final int MOVE_INTERVAL = 250;
 
     /**
-     * A map of opposite directions.
-     */
-    private static final Map<Direction, Direction> OPPOSITES = new EnumMap<>(Direction.class);
-
-    static {
-        OPPOSITES.put(Direction.NORTH, Direction.SOUTH);
-        OPPOSITES.put(Direction.SOUTH, Direction.NORTH);
-        OPPOSITES.put(Direction.WEST, Direction.EAST);
-        OPPOSITES.put(Direction.EAST, Direction.WEST);
-    }
-
-    /**
      * Creates a new "Clyde", a.k.a. "Pokey".
      *
      * @param spriteMap The sprites for this ghost.
      */
-    public Clyde(Map<Direction, Sprite> spriteMap) {
-        super(spriteMap, MOVE_INTERVAL, INTERVAL_VARIATION);
+    public Clyde(Map<Direction, Sprite> spriteMap, Map<Direction, Sprite> spriteMap2) {
+        super(spriteMap, spriteMap2, MOVE_INTERVAL, INTERVAL_VARIATION);
     }
 
 }

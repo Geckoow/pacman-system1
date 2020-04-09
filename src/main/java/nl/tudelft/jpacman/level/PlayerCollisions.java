@@ -2,6 +2,10 @@ package nl.tudelft.jpacman.level;
 
 import nl.tudelft.jpacman.board.Unit;
 import nl.tudelft.jpacman.npc.Ghost;
+import nl.tudelft.jpacman.npc.ai.RandomAi;
+import nl.tudelft.jpacman.npc.ai.ScaredAi;
+
+import java.util.List;
 
 /**
  * A simple implementation of a collision map for the JPacman player.
@@ -16,6 +20,11 @@ import nl.tudelft.jpacman.npc.Ghost;
 
 public class PlayerCollisions implements CollisionMap {
 
+    private final List<Ghost> ghosts;
+
+    public PlayerCollisions(List<Ghost> ghosts){
+        this.ghosts = ghosts;
+    }
     @Override
     public void collide(Unit mover, Unit collidedOn) {
         if (mover instanceof Player) {
@@ -26,6 +35,9 @@ public class PlayerCollisions implements CollisionMap {
         }
         else if (mover instanceof Pellet) {
             pelletColliding((Pellet) mover, collidedOn);
+        }
+        else if(mover instanceof PowerPill){
+            powerPillColliding((PowerPill) mover, collidedOn);
         }
     }
 
@@ -50,6 +62,11 @@ public class PlayerCollisions implements CollisionMap {
         }
     }
 
+    private void powerPillColliding(PowerPill powerPill, Unit collideOn) {
+        if(collideOn instanceof Player){
+            playerVersusPowerPill((Player) collideOn, powerPill);
+        }
+    }
 
     /**
      * Actual case of player bumping into ghost or vice versa.
@@ -71,5 +88,18 @@ public class PlayerCollisions implements CollisionMap {
         pellet.leaveSquare();
         player.addPoints(pellet.getValue());
     }
-
+    /**
+     * Actual case of player consuming a powerpill.
+     *
+     * @param player The player involved in the collision.
+     * @param powerPill The powerpill involved in the collision.
+     */
+    public void playerVersusPowerPill(Player player, PowerPill powerPill){
+        powerPill.leaveSquare();
+        player.addPoints(powerPill.getValue());
+        for(int i = 0; i < ghosts.size(); i++){
+            ghosts.get(i).setScared(true);
+            ghosts.get(i).addAi(new ScaredAi(ghosts.get(i)));
+        }
+    }
 }

@@ -73,8 +73,8 @@ public class Pinky extends Ghost {
      * @param spriteMap
      *            The sprites for this ghost.
      */
-    public Pinky(Map<Direction, Sprite> spriteMap) {
-        super(spriteMap, MOVE_INTERVAL, INTERVAL_VARIATION);
+    public Pinky(Map<Direction, Sprite> spriteMap, Map<Direction, Sprite> spriteMap2) {
+        super(spriteMap, spriteMap2, MOVE_INTERVAL, INTERVAL_VARIATION);
     }
 
 }

@@ -4,13 +4,10 @@ import nl.tudelft.jpacman.board.Direction;
 import nl.tudelft.jpacman.board.Square;
 import nl.tudelft.jpacman.board.Unit;
 import nl.tudelft.jpacman.npc.ai.Ai;
+import nl.tudelft.jpacman.sprite.PacManSprites;
 import nl.tudelft.jpacman.sprite.Sprite;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 
 /**
  * A non-player unit.
@@ -21,7 +18,14 @@ public abstract class Ghost extends Unit {
     /**
      * The sprite map, one sprite for each direction.
      */
-    private final Map<Direction, Sprite> sprites;
+    private final Map<Direction, Sprite> basicSprites;
+
+    /**
+     * The sprite map, one sprite for each direction.
+     */
+    private final Map<Direction, Sprite> fearSprites;
+
+    private Map<Direction, Sprite> sprites;
 
     /**
      * The base move interval of the ghost.
@@ -32,6 +36,25 @@ public abstract class Ghost extends Unit {
      * The random variation added to the {@link #moveInterval}.
      */
     private final int intervalVariation;
+
+    /**
+     * The amount of cells feared ghost wants to stay away from Pac Man.
+     */
+    private static final int FEARNESS = 12;
+
+    /**
+     * A map of opposite directions.
+     */
+    private static final Map<Direction, Direction> OPPOSITES = new EnumMap<>(Direction.class);
+
+    static {
+        OPPOSITES.put(Direction.NORTH, Direction.SOUTH);
+        OPPOSITES.put(Direction.SOUTH, Direction.NORTH);
+        OPPOSITES.put(Direction.WEST, Direction.EAST);
+        OPPOSITES.put(Direction.EAST, Direction.WEST);
+    }
+
+    private boolean scared;
 
     protected Ai ai;
     /**
@@ -48,28 +71,35 @@ public abstract class Ghost extends Unit {
     }
 
     /**
-     * Tries to calculate a move based on the behaviour of the npc.
-     *
-     * @return an optional containing the move or empty if the current state of the game
-     * makes the ai move impossible
-     */
-    //public abstract Optional<Direction> nextAiMove();
-
-    /**
      * Creates a new ghost.
      *
      * @param spriteMap         The sprites for every direction.
      * @param moveInterval      The base interval of movement.
      * @param intervalVariation The variation of the interval.
      */
-    protected Ghost(Map<Direction, Sprite> spriteMap, int moveInterval, int intervalVariation) {
+    protected Ghost(Map<Direction, Sprite> spriteMap, Map<Direction, Sprite> spriteMap2, int moveInterval, int intervalVariation) {
+        this.basicSprites = spriteMap;
+        this.fearSprites = spriteMap2;
         this.sprites = spriteMap;
         this.intervalVariation = intervalVariation;
         this.moveInterval = moveInterval;
+        this.scared = false;
     }
     public void addAi(Ai ai){
         this.ai = ai;
     }
+
+    public void switchSprite(){
+        if(this.scared == true)
+            this.sprites = fearSprites;
+        else
+            this.sprites = basicSprites;
+    }
+
+    public void setScared(boolean scared) {
+        this.scared = scared;
+    }
+
     @Override
     public Sprite getSprite() {
         return sprites.get(getDirection());
@@ -84,12 +114,21 @@ public abstract class Ghost extends Unit {
         return this.moveInterval + new Random().nextInt(this.intervalVariation);
     }
 
+    public static int getFEARNESS() {
+        return FEARNESS;
+    }
+
+    public static Map<Direction, Direction> getOPPOSITES() {
+        return OPPOSITES;
+    }
+
     /**
      * Determines a possible move in a random direction.
      *
      * @return A direction in which the ghost can move, or <code>null</code> if
      * the ghost is shut in by inaccessible squares.
      */
+
     protected Direction randomMove() {
         Square square = getSquare();
         List<Direction> directions = new ArrayList<>();

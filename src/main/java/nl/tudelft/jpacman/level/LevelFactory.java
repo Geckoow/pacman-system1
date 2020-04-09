@@ -33,6 +33,11 @@ public class LevelFactory {
     private static final int PELLET_VALUE = 10;
 
     /**
+     * The default value of a powerpill.
+     */
+    private static final int POWERPILL_VALUE = 50;
+
+    /**
      * The sprite store that provides sprites for units.
      */
     private final PacManSprites sprites;
@@ -76,7 +81,7 @@ public class LevelFactory {
                              List<Square> startPositions) {
 
         // We'll adopt the simple collision map for now.
-        CollisionMap collisionMap = new PlayerCollisions();
+        CollisionMap collisionMap = new PlayerCollisions(ghosts);
 
         return new Level(board, ghosts, startPositions, collisionMap);
     }
@@ -99,7 +104,7 @@ public class LevelFactory {
             case CLYDE:
                 return ghostFact.createClyde();
             default:
-                return new RandomGhost(sprites.getGhostSprite(GhostColor.RED));
+                return new RandomGhost(sprites.getGhostSprite(GhostColor.RED), sprites.getFearedGhostSprite());
         }
     }
 
@@ -110,6 +115,15 @@ public class LevelFactory {
      */
     public Pellet createPellet() {
         return new Pellet(PELLET_VALUE, sprites.getPelletSprite());
+    }
+
+    /**
+     * Creates a new powerpill.
+     *
+     * @return The new powerpill.
+     */
+    public PowerPill createPowerPill() {
+        return new PowerPill(POWERPILL_VALUE, sprites.getPowerPillSprite());
     }
 
     /**
@@ -130,14 +144,9 @@ public class LevelFactory {
          * @param ghostSprite
          *            The sprite for the ghost.
          */
-        RandomGhost(Map<Direction, Sprite> ghostSprite) {
-            super(ghostSprite, (int) DELAY, 0);
+        RandomGhost(Map<Direction, Sprite> ghostSprite, Map<Direction, Sprite> ghostSprite2) {
+            super(ghostSprite, ghostSprite2, (int) DELAY, 0);
             addAi(new RandomAi(this));
         }
-
-        /*@Override
-        public Optional<Direction> nextAiMove() {
-            return Optional.empty();
-        }*/
     }
 }

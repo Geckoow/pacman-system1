@@ -112,6 +112,11 @@ public class PacManSprites extends SpriteStore {
         return directionSprite(resource, GHOST_ANIMATION_FRAMES);
     }
 
+    public Map<Direction, Sprite> getFearedGhostSprite() {
+        String resource = "/sprite/ghost_vul_blue.png";
+        return directionSprite(resource, GHOST_ANIMATION_FRAMES);
+    }
+
     /**
      * @return The sprite for the wall.
      */
@@ -131,6 +136,13 @@ public class PacManSprites extends SpriteStore {
      */
     public Sprite getPelletSprite() {
         return loadSprite("/sprite/pellet.png");
+    }
+
+    /**
+     * @return The sprite for the
+     */
+    public Sprite getPowerPillSprite(){
+        return loadSprite("/sprite/bell.png");
     }
 
     /**

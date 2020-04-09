@@ -35,7 +35,7 @@ public class GhostFactory {
      * @return A new Blinky.
      */
     public Ghost createBlinky() {
-        Blinky blinky = new Blinky(sprites.getGhostSprite(GhostColor.RED));
+        Blinky blinky = new Blinky(sprites.getGhostSprite(GhostColor.RED), sprites.getFearedGhostSprite());
         blinky.addAi(new BlinkyAi(blinky));
         return blinky;
     }
@@ -47,7 +47,7 @@ public class GhostFactory {
      * @return A new Pinky.
      */
     public Ghost createPinky() {
-        Pinky pinky = new Pinky(sprites.getGhostSprite(GhostColor.PINK));
+        Pinky pinky = new Pinky(sprites.getGhostSprite(GhostColor.PINK), sprites.getFearedGhostSprite());
         pinky.addAi(new PinkyAi(pinky));
         return pinky;
     }
@@ -59,7 +59,7 @@ public class GhostFactory {
      * @return A new Inky.
      */
     public Ghost createInky() {
-        Inky inky = new Inky(sprites.getGhostSprite(GhostColor.CYAN));
+        Inky inky = new Inky(sprites.getGhostSprite(GhostColor.CYAN), sprites.getFearedGhostSprite());
         inky.addAi(new InkyAi(inky));
         return inky;
     }
@@ -71,7 +71,7 @@ public class GhostFactory {
      * @return A new Clyde.
      */
     public Ghost createClyde() {
-        Clyde clyde = new Clyde(sprites.getGhostSprite(GhostColor.ORANGE));
+        Clyde clyde = new Clyde(sprites.getGhostSprite(GhostColor.ORANGE), sprites.getFearedGhostSprite());
         clyde.addAi(new ClydeAi(clyde));
         return clyde;
     }
