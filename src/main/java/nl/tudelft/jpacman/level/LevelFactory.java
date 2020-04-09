@@ -8,6 +8,7 @@ import nl.tudelft.jpacman.board.Board;
 import nl.tudelft.jpacman.board.Direction;
 import nl.tudelft.jpacman.board.Square;
 import nl.tudelft.jpacman.npc.Ghost;
+import nl.tudelft.jpacman.npc.ai.RandomAi;
 import nl.tudelft.jpacman.npc.ghost.GhostColor;
 import nl.tudelft.jpacman.npc.ghost.GhostFactory;
 import nl.tudelft.jpacman.sprite.PacManSprites;
@@ -131,11 +132,12 @@ public class LevelFactory {
          */
         RandomGhost(Map<Direction, Sprite> ghostSprite) {
             super(ghostSprite, (int) DELAY, 0);
+            addAi(new RandomAi(this));
         }
 
-        @Override
+        /*@Override
         public Optional<Direction> nextAiMove() {
             return Optional.empty();
-        }
+        }*/
     }
 }

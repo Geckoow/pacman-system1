@@ -41,6 +41,14 @@ import nl.tudelft.jpacman.sprite.Sprite;
  */
 public class Clyde extends Ghost {
 
+    public static int getSHYNESS() {
+        return SHYNESS;
+    }
+
+    public static Map<Direction, Direction> getOPPOSITES() {
+        return OPPOSITES;
+    }
+
     /**
      * The amount of cells Clyde wants to stay away from Pac Man.
      */
@@ -78,37 +86,4 @@ public class Clyde extends Ghost {
         super(spriteMap, MOVE_INTERVAL, INTERVAL_VARIATION);
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * <p>
-     * Clyde has two basic AIs, one for when he's far from Pac-Man, and one for
-     * when he is near to Pac-Man. 
-     * When Clyde is far away from Pac-Man (beyond eight grid spaces),
-     * Clyde behaves very much like Blinky, trying to move to Pac-Man's exact
-     * location. However, when Clyde gets within eight grid spaces of Pac-Man,
-     * he automatically changes his behavior and runs away
-     * </p>
-     */
-    @Override
-    public Optional<Direction> nextAiMove() {
-        assert hasSquare();
-
-        Unit nearest = Navigation.findNearest(Player.class, getSquare());
-        if (nearest == null) {
-            return Optional.empty();
-        }
-        assert nearest.hasSquare();
-        Square target = nearest.getSquare();
-
-        List<Direction> path = Navigation.shortestPath(getSquare(), target, this);
-        if (path != null && !path.isEmpty()) {
-            Direction direction = path.get(0);
-            if (path.size() <= SHYNESS) {
-                return Optional.ofNullable(OPPOSITES.get(direction));
-            }
-            return Optional.of(direction);
-        }
-        return Optional.empty();
-    }
 }

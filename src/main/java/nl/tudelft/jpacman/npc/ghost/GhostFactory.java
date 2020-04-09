@@ -1,6 +1,10 @@
 package nl.tudelft.jpacman.npc.ghost;
 
 import nl.tudelft.jpacman.npc.Ghost;
+import nl.tudelft.jpacman.npc.ai.BlinkyAi;
+import nl.tudelft.jpacman.npc.ai.ClydeAi;
+import nl.tudelft.jpacman.npc.ai.InkyAi;
+import nl.tudelft.jpacman.npc.ai.PinkyAi;
 import nl.tudelft.jpacman.sprite.PacManSprites;
 
 /**
@@ -31,7 +35,9 @@ public class GhostFactory {
      * @return A new Blinky.
      */
     public Ghost createBlinky() {
-        return new Blinky(sprites.getGhostSprite(GhostColor.RED));
+        Blinky blinky = new Blinky(sprites.getGhostSprite(GhostColor.RED));
+        blinky.addAi(new BlinkyAi(blinky));
+        return blinky;
     }
 
     /**
@@ -41,7 +47,9 @@ public class GhostFactory {
      * @return A new Pinky.
      */
     public Ghost createPinky() {
-        return new Pinky(sprites.getGhostSprite(GhostColor.PINK));
+        Pinky pinky = new Pinky(sprites.getGhostSprite(GhostColor.PINK));
+        pinky.addAi(new PinkyAi(pinky));
+        return pinky;
     }
 
     /**
@@ -51,7 +59,9 @@ public class GhostFactory {
      * @return A new Inky.
      */
     public Ghost createInky() {
-        return new Inky(sprites.getGhostSprite(GhostColor.CYAN));
+        Inky inky = new Inky(sprites.getGhostSprite(GhostColor.CYAN));
+        inky.addAi(new InkyAi(inky));
+        return inky;
     }
 
     /**
@@ -61,6 +71,8 @@ public class GhostFactory {
      * @return A new Clyde.
      */
     public Ghost createClyde() {
-        return new Clyde(sprites.getGhostSprite(GhostColor.ORANGE));
+        Clyde clyde = new Clyde(sprites.getGhostSprite(GhostColor.ORANGE));
+        clyde.addAi(new ClydeAi(clyde));
+        return clyde;
     }
 }

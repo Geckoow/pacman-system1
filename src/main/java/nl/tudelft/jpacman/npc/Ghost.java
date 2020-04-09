@@ -3,6 +3,7 @@ package nl.tudelft.jpacman.npc;
 import nl.tudelft.jpacman.board.Direction;
 import nl.tudelft.jpacman.board.Square;
 import nl.tudelft.jpacman.board.Unit;
+import nl.tudelft.jpacman.npc.ai.Ai;
 import nl.tudelft.jpacman.sprite.Sprite;
 
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ public abstract class Ghost extends Unit {
      */
     private final int intervalVariation;
 
+    protected Ai ai;
     /**
      * Calculates the next move for this unit and returns the direction to move
      * in.
@@ -42,7 +44,7 @@ public abstract class Ghost extends Unit {
      * be devised.
      */
     public Direction nextMove() {
-        return nextAiMove().orElseGet(this::randomMove);
+        return ai.nextAiMove().orElseGet(this::randomMove);
     }
 
     /**
@@ -51,7 +53,7 @@ public abstract class Ghost extends Unit {
      * @return an optional containing the move or empty if the current state of the game
      * makes the ai move impossible
      */
-    public abstract Optional<Direction> nextAiMove();
+    //public abstract Optional<Direction> nextAiMove();
 
     /**
      * Creates a new ghost.
@@ -65,7 +67,9 @@ public abstract class Ghost extends Unit {
         this.intervalVariation = intervalVariation;
         this.moveInterval = moveInterval;
     }
-
+    public void addAi(Ai ai){
+        this.ai = ai;
+    }
     @Override
     public Sprite getSprite() {
         return sprites.get(getDirection());
