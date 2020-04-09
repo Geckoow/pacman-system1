@@ -66,8 +66,10 @@ public class Clyde extends Ghost {
      *
      * @param spriteMap The sprites for this ghost.
      */
+    private String name;
     public Clyde(Map<Direction, Sprite> spriteMap, Map<Direction, Sprite> spriteMap2) {
         super(spriteMap, spriteMap2, MOVE_INTERVAL, INTERVAL_VARIATION);
+        this.name = "Clyde";
     }
 
 }

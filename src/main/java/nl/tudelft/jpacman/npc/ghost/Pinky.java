@@ -67,6 +67,8 @@ public class Pinky extends Ghost {
         return SQUARES_AHEAD;
     }
 
+    private String name;
+
     /**
      * Creates a new "Pinky", a.k.a. "Speedy".
      *
@@ -75,6 +77,7 @@ public class Pinky extends Ghost {
      */
     public Pinky(Map<Direction, Sprite> spriteMap, Map<Direction, Sprite> spriteMap2) {
         super(spriteMap, spriteMap2, MOVE_INTERVAL, INTERVAL_VARIATION);
+        this.name = "Pinky";
     }
 
 }

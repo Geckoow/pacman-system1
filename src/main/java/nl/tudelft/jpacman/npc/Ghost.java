@@ -57,6 +57,8 @@ public abstract class Ghost extends Unit {
     private boolean scared;
 
     protected Ai ai;
+
+    private String name;
     /**
      * Calculates the next move for this unit and returns the direction to move
      * in.
@@ -84,6 +86,7 @@ public abstract class Ghost extends Unit {
         this.intervalVariation = intervalVariation;
         this.moveInterval = moveInterval;
         this.scared = false;
+        this.name = "ghost";
     }
     public void addAi(Ai ai){
         this.ai = ai;
@@ -94,6 +97,10 @@ public abstract class Ghost extends Unit {
             this.sprites = fearSprites;
         else
             this.sprites = basicSprites;
+    }
+
+    public boolean isScared() {
+        return scared;
     }
 
     public void setScared(boolean scared) {
@@ -120,6 +127,10 @@ public abstract class Ghost extends Unit {
 
     public static Map<Direction, Direction> getOPPOSITES() {
         return OPPOSITES;
+    }
+
+    public String getName() {
+        return name;
     }
 
     /**

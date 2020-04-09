@@ -19,6 +19,8 @@ public class Player extends Unit {
      */
     private int score;
 
+    private int kill;
+
     /**
      * The animations for every direction.
      */
@@ -44,6 +46,7 @@ public class Player extends Unit {
      */
     protected Player(Map<Direction, Sprite> spriteMap, AnimatedSprite deathAnimation) {
         this.score = 0;
+        this.kill = 0;
         this.alive = true;
         this.sprites = spriteMap;
         this.deathSprite = deathAnimation;
@@ -82,6 +85,14 @@ public class Player extends Unit {
      */
     public int getScore() {
         return score;
+    }
+
+    public int getKill() {
+        return kill;
+    }
+
+    public void setKill(int kill) {
+        this.kill = kill;
     }
 
     @Override

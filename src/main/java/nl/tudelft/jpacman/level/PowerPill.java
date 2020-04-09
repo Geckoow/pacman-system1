@@ -34,6 +34,6 @@ public class PowerPill extends Unit {
 
     @Override
     public Sprite getSprite() {
-        return null;
+        return image;
     }
 }

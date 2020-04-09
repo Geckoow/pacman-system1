@@ -50,6 +50,7 @@ public class Inky extends Ghost {
         return SQUARES_AHEAD;
     }
 
+    private String name;
     /**
      * Creates a new "Inky".
      *
@@ -57,6 +58,7 @@ public class Inky extends Ghost {
      */
     public Inky(Map<Direction, Sprite> spriteMap, Map<Direction, Sprite> spriteMap2) {
         super(spriteMap, spriteMap2, MOVE_INTERVAL, INTERVAL_VARIATION);
+        this.name = "Inky";
     }
 
     /**

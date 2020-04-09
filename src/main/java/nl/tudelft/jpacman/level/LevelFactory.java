@@ -81,7 +81,7 @@ public class LevelFactory {
                              List<Square> startPositions) {
 
         // We'll adopt the simple collision map for now.
-        CollisionMap collisionMap = new PlayerCollisions(ghosts);
+        CollisionMap collisionMap = new PlayerCollisions(ghosts, ghostFact);
 
         return new Level(board, ghosts, startPositions, collisionMap);
     }

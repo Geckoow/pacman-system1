@@ -1,11 +1,18 @@
 package nl.tudelft.jpacman.level;
 
+import nl.tudelft.jpacman.board.Square;
 import nl.tudelft.jpacman.board.Unit;
 import nl.tudelft.jpacman.npc.Ghost;
 import nl.tudelft.jpacman.npc.ai.RandomAi;
 import nl.tudelft.jpacman.npc.ai.ScaredAi;
+import nl.tudelft.jpacman.npc.ghost.GhostFactory;
 
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
+
+import static jdk.nashorn.internal.objects.Global.print;
 
 /**
  * A simple implementation of a collision map for the JPacman player.
@@ -21,9 +28,13 @@ import java.util.List;
 public class PlayerCollisions implements CollisionMap {
 
     private final List<Ghost> ghosts;
+    private final GhostFactory ghostFact;
+    private Timer timer;
 
-    public PlayerCollisions(List<Ghost> ghosts){
+    public PlayerCollisions(List<Ghost> ghosts, GhostFactory ghostFactory){
         this.ghosts = ghosts;
+        this.ghostFact = ghostFactory;
+        this.timer = new Timer();
     }
     @Override
     public void collide(Unit mover, Unit collidedOn) {
@@ -48,6 +59,9 @@ public class PlayerCollisions implements CollisionMap {
         if (collidedOn instanceof Pellet) {
             playerVersusPellet(player, (Pellet) collidedOn);
         }
+        if(collidedOn instanceof PowerPill){
+            playerVersusPowerPill(player, (PowerPill) collidedOn);
+        }
     }
 
     private void ghostColliding(Ghost ghost, Unit collidedOn) {
@@ -62,9 +76,9 @@ public class PlayerCollisions implements CollisionMap {
         }
     }
 
-    private void powerPillColliding(PowerPill powerPill, Unit collideOn) {
-        if(collideOn instanceof Player){
-            playerVersusPowerPill((Player) collideOn, powerPill);
+    private void powerPillColliding(PowerPill powerPill, Unit collidedOn) {
+        if(collidedOn instanceof Player){
+            playerVersusPowerPill((Player) collidedOn, powerPill);
         }
     }
 
@@ -75,7 +89,14 @@ public class PlayerCollisions implements CollisionMap {
      * @param ghost The ghost involved in the collision.
      */
     public void playerVersusGhost(Player player, Ghost ghost) {
-        player.setAlive(false);
+        if(ghost.isScared() == false)
+            player.setAlive(false);
+        else{
+            int kill = player.getKill();
+            player.setKill(kill+1);
+            player.addPoints((int) (Math.pow(2, player.getKill())*100));
+            ghost.leaveSquare();
+        }
     }
 
     /**
@@ -100,6 +121,7 @@ public class PlayerCollisions implements CollisionMap {
         for(int i = 0; i < ghosts.size(); i++){
             ghosts.get(i).setScared(true);
             ghosts.get(i).addAi(new ScaredAi(ghosts.get(i)));
+            ghosts.get(i).switchSprite();
         }
     }
 }
