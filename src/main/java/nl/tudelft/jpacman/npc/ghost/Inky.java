@@ -5,6 +5,8 @@ import nl.tudelft.jpacman.board.Square;
 import nl.tudelft.jpacman.board.Unit;
 import nl.tudelft.jpacman.level.Player;
 import nl.tudelft.jpacman.npc.Ghost;
+import nl.tudelft.jpacman.npc.ai.BlinkyAi;
+import nl.tudelft.jpacman.npc.ai.InkyAi;
 import nl.tudelft.jpacman.sprite.Sprite;
 
 import java.util.List;
@@ -59,6 +61,12 @@ public class Inky extends Ghost {
     public Inky(Map<Direction, Sprite> spriteMap, Map<Direction, Sprite> spriteMap2) {
         super(spriteMap, spriteMap2, MOVE_INTERVAL, INTERVAL_VARIATION);
         this.name = "Inky";
+    }
+
+    public void reverseScared(){
+        setScared(false);
+        addAi(new InkyAi(this));
+        setSprites(getBasicSprites());
     }
 
     /**

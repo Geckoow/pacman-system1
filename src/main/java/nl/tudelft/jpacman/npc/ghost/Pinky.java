@@ -9,6 +9,8 @@ import nl.tudelft.jpacman.board.Square;
 import nl.tudelft.jpacman.board.Unit;
 import nl.tudelft.jpacman.level.Player;
 import nl.tudelft.jpacman.npc.Ghost;
+import nl.tudelft.jpacman.npc.ai.BlinkyAi;
+import nl.tudelft.jpacman.npc.ai.PinkyAi;
 import nl.tudelft.jpacman.sprite.Sprite;
 
 /**
@@ -79,5 +81,9 @@ public class Pinky extends Ghost {
         super(spriteMap, spriteMap2, MOVE_INTERVAL, INTERVAL_VARIATION);
         this.name = "Pinky";
     }
-
+    public void reverseScared(){
+        setScared(false);
+        addAi(new PinkyAi(this));
+        setSprites(getBasicSprites());
+    }
 }

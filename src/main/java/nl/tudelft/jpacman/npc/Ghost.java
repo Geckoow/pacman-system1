@@ -4,6 +4,7 @@ import nl.tudelft.jpacman.board.Direction;
 import nl.tudelft.jpacman.board.Square;
 import nl.tudelft.jpacman.board.Unit;
 import nl.tudelft.jpacman.npc.ai.Ai;
+import nl.tudelft.jpacman.npc.ai.ScaredAi;
 import nl.tudelft.jpacman.sprite.PacManSprites;
 import nl.tudelft.jpacman.sprite.Sprite;
 
@@ -40,7 +41,7 @@ public abstract class Ghost extends Unit {
     /**
      * The amount of cells feared ghost wants to stay away from Pac Man.
      */
-    private static final int FEARNESS = 12;
+    private static final int FEARNESS = 4;
 
     /**
      * A map of opposite directions.
@@ -92,12 +93,12 @@ public abstract class Ghost extends Unit {
         this.ai = ai;
     }
 
-    public void switchSprite(){
-        if(this.scared == true)
-            this.sprites = fearSprites;
-        else
-            this.sprites = basicSprites;
+    public void scared(){
+        this.scared = true;
+        addAi(new ScaredAi(this));
+        this.sprites = fearSprites;
     }
+    public abstract void reverseScared();
 
     public boolean isScared() {
         return scared;
@@ -105,6 +106,14 @@ public abstract class Ghost extends Unit {
 
     public void setScared(boolean scared) {
         this.scared = scared;
+    }
+
+    public Map<Direction, Sprite> getBasicSprites() {
+        return basicSprites;
+    }
+
+    public void setSprites(Map<Direction, Sprite> sprites) {
+        this.sprites = sprites;
     }
 
     @Override

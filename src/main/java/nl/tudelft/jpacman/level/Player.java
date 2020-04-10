@@ -22,6 +22,8 @@ public class Player extends Unit {
 
     private int kill;
 
+    private int powerPillEaten;
+
     /**
      * The variation in intervals, this makes the ghosts look more dynamic and
      * less predictable.
@@ -59,6 +61,7 @@ public class Player extends Unit {
     protected Player(Map<Direction, Sprite> spriteMap, AnimatedSprite deathAnimation) {
         this.score = 0;
         this.kill = 0;
+        this.powerPillEaten = 4;
         this.alive = true;
         this.sprites = spriteMap;
         this.deathSprite = deathAnimation;
@@ -101,6 +104,10 @@ public class Player extends Unit {
 
     public int getKill() {
         return kill;
+    }
+
+    public int getPowerPillEaten() {
+        return powerPillEaten;
     }
 
     public void setKill(int kill) {

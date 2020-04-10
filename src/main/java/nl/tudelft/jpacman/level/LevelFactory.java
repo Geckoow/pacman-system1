@@ -8,6 +8,7 @@ import nl.tudelft.jpacman.board.Board;
 import nl.tudelft.jpacman.board.Direction;
 import nl.tudelft.jpacman.board.Square;
 import nl.tudelft.jpacman.npc.Ghost;
+import nl.tudelft.jpacman.npc.ai.BlinkyAi;
 import nl.tudelft.jpacman.npc.ai.RandomAi;
 import nl.tudelft.jpacman.npc.ghost.GhostColor;
 import nl.tudelft.jpacman.npc.ghost.GhostFactory;
@@ -86,7 +87,7 @@ public class LevelFactory {
                              List<Square> startPositions) {
 
         // We'll adopt the simple collision map for now.
-        CollisionMap collisionMap = new PlayerCollisions(ghosts, ghostFact);
+        CollisionMap collisionMap = new PlayerCollisions(ghosts, board);
 
         return new Level(board, ghosts, startPositions, collisionMap);
     }
@@ -214,6 +215,11 @@ public class LevelFactory {
         RandomGhost(Map<Direction, Sprite> ghostSprite, Map<Direction, Sprite> ghostSprite2) {
             super(ghostSprite, ghostSprite2, (int) DELAY, 0);
             addAi(new RandomAi(this));
+        }
+        public void reverseScared(){
+            setScared(false);
+            addAi(new RandomAi(this));
+            setSprites(getBasicSprites());
         }
     }
 }

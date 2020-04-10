@@ -1,15 +1,20 @@
 package nl.tudelft.jpacman.level;
 
+import nl.tudelft.jpacman.board.Board;
+import nl.tudelft.jpacman.board.Direction;
 import nl.tudelft.jpacman.board.Square;
 import nl.tudelft.jpacman.board.Unit;
 import nl.tudelft.jpacman.npc.Ghost;
 import nl.tudelft.jpacman.npc.ai.RandomAi;
 import nl.tudelft.jpacman.npc.ai.ScaredAi;
+import nl.tudelft.jpacman.npc.ghost.Blinky;
 import nl.tudelft.jpacman.npc.ghost.GhostFactory;
 
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import static jdk.nashorn.internal.objects.Global.print;
@@ -28,13 +33,11 @@ import static jdk.nashorn.internal.objects.Global.print;
 public class PlayerCollisions implements CollisionMap {
 
     private final List<Ghost> ghosts;
-    private final GhostFactory ghostFact;
-    private Timer timer;
+    private final Board board;
 
-    public PlayerCollisions(List<Ghost> ghosts, GhostFactory ghostFactory){
+    public PlayerCollisions(List<Ghost> ghosts, Board board){
         this.ghosts = ghosts;
-        this.ghostFact = ghostFactory;
-        this.timer = new Timer();
+        this.board = board;
     }
     @Override
     public void collide(Unit mover, Unit collidedOn) {
@@ -96,6 +99,14 @@ public class PlayerCollisions implements CollisionMap {
             player.setKill(kill+1);
             player.addPoints((int) (Math.pow(2, player.getKill())*100));
             ghost.leaveSquare();
+
+            Square s = board.getGhostRespawn();
+            ghost.occupy(s);
+            board.getBoard()[board.getHeight()/2][board.getWidth()/2] = s;
+            ghost.reverseScared();
+            //ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+
+            //executorService.schedule(new RespawnGhostTask(executorService, ghost), 5, TimeUnit.SECONDS);
         }
     }
 
@@ -119,9 +130,94 @@ public class PlayerCollisions implements CollisionMap {
         powerPill.leaveSquare();
         player.addPoints(powerPill.getValue());
         for(int i = 0; i < ghosts.size(); i++){
-            ghosts.get(i).setScared(true);
-            ghosts.get(i).addAi(new ScaredAi(ghosts.get(i)));
-            ghosts.get(i).switchSprite();
+            ghosts.get(i).scared();
+        }
+        int timer = 7;
+        if(player.getPowerPillEaten() < 3)
+            timer = 5;
+        ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+
+        executorService.schedule(new PowerPillTask(executorService, player, ghosts), timer, TimeUnit.SECONDS);
+
+    }
+
+    /**
+     * A task that moves an NPC and reschedules itself after it finished.
+     *
+     * @author Jeroen Roosen
+     */
+    private final class RespawnGhostTask implements Runnable {
+
+        /**
+         * The service executing the task.
+         */
+        private final ScheduledExecutorService service;
+
+        /**
+         * The player to move.
+         */
+        private final Ghost ghost;
+
+        /**
+         * Creates a new task.
+         *
+         * @param service
+         *            The service that executes the task.
+         * @param ghost
+         *            The NPC to move.
+         */
+        RespawnGhostTask(ScheduledExecutorService service, Ghost ghost) {
+            this.service = service;
+            this.ghost = ghost;
+        }
+
+        @Override
+        public void run() {
+            Square s = board.getGhostRespawn();
+            ghost.occupy(s);
+            board.getBoard()[board.getHeight()/2][board.getWidth()/2] = s;
+        }
+    }
+
+    /**
+     * A task that moves an NPC and reschedules itself after it finished.
+     *
+     * @author Jeroen Roosen
+     */
+    private final class PowerPillTask implements Runnable {
+
+        /**
+         * The service executing the task.
+         */
+        private final ScheduledExecutorService service;
+
+        /**
+         * The player to move.
+         */
+        private final List<Ghost> ghosts;
+
+        private final Player player;
+
+        /**
+         * Creates a new task.
+         *
+         * @param service
+         *            The service that executes the task.
+         * @param ghosts
+         *            The NPC to move.
+         */
+        PowerPillTask(ScheduledExecutorService service, Player player, List<Ghost> ghosts) {
+            this.service = service;
+            this.player = player;
+            this.ghosts = ghosts;
+        }
+
+        @Override
+        public void run() {
+            for(int i = 0; i < ghosts.size(); i++){
+                ghosts.get(i).reverseScared();
+            }
+            player.setKill(0);
         }
     }
 }

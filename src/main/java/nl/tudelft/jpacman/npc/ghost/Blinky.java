@@ -68,4 +68,10 @@ public class Blinky extends Ghost {
         this.name = "Blinky";
     }
 
+    public void reverseScared(){
+        setScared(false);
+        addAi(new BlinkyAi(this));
+        setSprites(getBasicSprites());
+    }
+
 }
