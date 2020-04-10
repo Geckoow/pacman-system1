@@ -1,6 +1,7 @@
 package nl.tudelft.jpacman.level;
 
 import java.util.Map;
+import java.util.Random;
 
 import nl.tudelft.jpacman.board.Direction;
 import nl.tudelft.jpacman.board.Unit;
@@ -20,6 +21,17 @@ public class Player extends Unit {
     private int score;
 
     private int kill;
+
+    /**
+     * The variation in intervals, this makes the ghosts look more dynamic and
+     * less predictable.
+     */
+    private static final int INTERVAL_VARIATION = 50;
+
+    /**
+     * The base movement interval.
+     */
+    private static final int MOVE_INTERVAL = 250;
 
     /**
      * The animations for every direction.
@@ -101,6 +113,15 @@ public class Player extends Unit {
             return sprites.get(getDirection());
         }
         return deathSprite;
+    }
+
+    /**
+     * The time that should be taken between moves.
+     *
+     * @return The suggested delay between moves in milliseconds.
+     */
+    public long getInterval() {
+        return MOVE_INTERVAL + new Random().nextInt(INTERVAL_VARIATION);
     }
 
     /**

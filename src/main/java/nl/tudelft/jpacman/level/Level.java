@@ -48,6 +48,11 @@ public class Level {
     private final Map<Ghost, ScheduledExecutorService> npcs;
 
     /**
+     * The NPCs of this level and, if they are running, their schedules.
+     */
+    private final Map<Player, ScheduledExecutorService> plays;
+
+    /**
      * <code>true</code> iff this level is currently in progress, i.e. players
      * and NPCs can move.
      */
@@ -78,6 +83,8 @@ public class Level {
      */
     private final Set<LevelObserver> observers;
 
+    private NPCMove npcMove;
+
     /**
      * Creates a new level for the board.
      *
@@ -107,6 +114,9 @@ public class Level {
         this.players = new ArrayList<>();
         this.collisions = collisionMap;
         this.observers = new HashSet<>();
+
+        this.npcMove = new NPCMove(this);
+        this.plays = new HashMap<>();
     }
 
     /**
@@ -195,6 +205,32 @@ public class Level {
     }
 
     /**
+     * Starts all NPC movement scheduling.
+     */
+    protected void startPlayer() {
+        for (final Player player : players) {
+            ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
+
+            service.schedule(new Level.PlayerMoveTask(service, player),
+                player.getInterval() / 2, TimeUnit.MILLISECONDS);
+
+            plays.put(player, service);
+        }
+    }
+
+    /**
+     * Stops all NPC movement scheduling and interrupts any movements being
+     * executed.
+     */
+    protected void stopPlayer() {
+        for (Map.Entry<Player, ScheduledExecutorService> entry : plays.entrySet()) {
+            ScheduledExecutorService schedule = entry.getValue();
+            assert schedule != null;
+            schedule.shutdownNow();
+        }
+    }
+
+    /**
      * Starts or resumes this level, allowing movement and (re)starting the
      * NPCs.
      */
@@ -203,7 +239,8 @@ public class Level {
             if (isInProgress()) {
                 return;
             }
-            startNPCs();
+            npcMove.startNPCs(npcs);
+            startPlayer();
             inProgress = true;
             updateObservers();
         }
@@ -218,34 +255,8 @@ public class Level {
             if (!isInProgress()) {
                 return;
             }
-            stopNPCs();
+            npcMove.stopNPCs(npcs);
             inProgress = false;
-        }
-    }
-
-    /**
-     * Starts all NPC movement scheduling.
-     */
-    private void startNPCs() {
-        for (final Ghost npc : npcs.keySet()) {
-            ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
-
-            service.schedule(new NpcMoveTask(service, npc),
-                npc.getInterval() / 2, TimeUnit.MILLISECONDS);
-
-            npcs.put(npc, service);
-        }
-    }
-
-    /**
-     * Stops all NPC movement scheduling and interrupts any movements being
-     * executed.
-     */
-    private void stopNPCs() {
-        for (Entry<Ghost, ScheduledExecutorService> entry : npcs.entrySet()) {
-            ScheduledExecutorService schedule = entry.getValue();
-            assert schedule != null;
-            schedule.shutdownNow();
         }
     }
 
@@ -317,7 +328,7 @@ public class Level {
      *
      * @author Jeroen Roosen
      */
-    private final class NpcMoveTask implements Runnable {
+    private final class PlayerMoveTask implements Runnable {
 
         /**
          * The service executing the task.
@@ -325,34 +336,33 @@ public class Level {
         private final ScheduledExecutorService service;
 
         /**
-         * The NPC to move.
+         * The player to move.
          */
-        private final Ghost npc;
+        private final Player player;
 
         /**
          * Creates a new task.
          *
          * @param service
          *            The service that executes the task.
-         * @param npc
+         * @param player
          *            The NPC to move.
          */
-        NpcMoveTask(ScheduledExecutorService service, Ghost npc) {
+        PlayerMoveTask(ScheduledExecutorService service, Player player) {
             this.service = service;
-            this.npc = npc;
+            this.player = player;
         }
 
         @Override
         public void run() {
-            Direction nextMove = npc.nextMove();
+            Direction nextMove = player.getDirection();
             if (nextMove != null) {
-                move(npc, nextMove);
+                move(player, nextMove);
             }
-            long interval = npc.getInterval();
+            long interval = player.getInterval();
             service.schedule(this, interval, TimeUnit.MILLISECONDS);
         }
     }
-
     /**
      * An observer that will be notified when the level is won or lost.
      *

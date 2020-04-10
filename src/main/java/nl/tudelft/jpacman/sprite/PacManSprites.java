@@ -141,10 +141,44 @@ public class PacManSprites extends SpriteStore {
     /**
      * @return The sprite for the
      */
+    public Sprite getAppleSprite(){
+        return loadSprite("/sprite/apple.png");
+    }
+
+    /**
+     * @return The sprite for the
+     */
+    public Sprite getCherrySprite(){
+        return loadSprite("/sprite/cherry.png");
+    }
+
+    /**
+     * @return The sprite for the
+     */
+    public Sprite getMelonSprite(){
+        return loadSprite("/sprite/melon.png");
+    }
+
+    /**
+     * @return The sprite for the
+     */
+    public Sprite getOrangeSprite(){
+        return loadSprite("/sprite/orange.png");
+    }
+
+    /**
+     * @return The sprite for the
+     */
+    public Sprite getStrawberrySprite(){
+        return loadSprite("/sprite/strawberry.png");
+    }
+
+    /**
+     * @return The sprite for the
+     */
     public Sprite getPowerPillSprite(){
         return loadSprite("/sprite/bell.png");
     }
-
     /**
      * Overloads the default sprite loading, ignoring the exception. This class
      * assumes all sprites are provided, hence the exception will be thrown as a

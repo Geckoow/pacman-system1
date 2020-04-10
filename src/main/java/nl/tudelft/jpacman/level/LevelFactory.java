@@ -33,6 +33,11 @@ public class LevelFactory {
     private static final int PELLET_VALUE = 10;
 
     /**
+     * The default value of a pellet.
+     */
+    private static final int FRUIT_VALUE = 100;
+
+    /**
      * The default value of a powerpill.
      */
     private static final int POWERPILL_VALUE = 50;
@@ -118,10 +123,72 @@ public class LevelFactory {
     }
 
     /**
+     * Creates a new fruit.
+     *
+     * @return The new fruit.
+     */
+    public Pellet createApple() {
+        return new Pellet(FRUIT_VALUE, sprites.getAppleSprite());
+    }
+
+    /**
+     * Creates a new fruit.
+     *
+     * @return The new fruit.
+     */
+    public Pellet createCherry() {
+        return new Pellet(FRUIT_VALUE, sprites.getCherrySprite());
+    }
+
+    /**
+     * Creates a new fruit.
+     *
+     * @return The new fruit.
+     */
+    public Pellet createMelon() {
+        return new Pellet(FRUIT_VALUE, sprites.getMelonSprite());
+    }
+
+    /**
+     * Creates a new fruit.
+     *
+     * @return The new fruit.
+     */
+    public Pellet createOrange() {
+        return new Pellet(FRUIT_VALUE, sprites.getOrangeSprite());
+    }
+
+    /**
+     * Creates a new fruit.
+     *
+     * @return The new fruit.
+     */
+    public Pellet createStrawberry() {
+        return new Pellet(FRUIT_VALUE, sprites.getStrawberrySprite());
+    }
+    /**
      * Creates a new powerpill.
      *
      * @return The new powerpill.
      */
+
+    public Pellet createFruit(){
+        int rand = (int) (Math.random()*5);
+        System.out.println(rand);
+        switch (rand){
+            case 0 :
+                return createApple();
+            case 1 :
+                return createCherry();
+            case 2 :
+                return createMelon();
+            case 3:
+                return createOrange();
+            case 4:
+                return createStrawberry();
+        }
+        return createPellet();
+    }
     public PowerPill createPowerPill() {
         return new PowerPill(POWERPILL_VALUE, sprites.getPowerPillSprite());
     }

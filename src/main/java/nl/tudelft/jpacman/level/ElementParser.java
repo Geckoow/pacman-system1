@@ -128,6 +128,11 @@ public class ElementParser {
                     grid[x][y] = powerpillSquare;
                     levelCreator.createPowerPill().occupy(powerpillSquare);
                     break;
+                case 'f':
+                    Square fruitSquare = boardCreator.createGround();
+                    grid[x][y] = fruitSquare;
+                    levelCreator.createFruit().occupy(fruitSquare);
+                    break;
                 default:
                     throw new PacmanConfigurationException("Invalid character at "
                         + x + "," + y + ": " + c);
