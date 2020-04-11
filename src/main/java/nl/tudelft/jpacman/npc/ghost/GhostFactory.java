@@ -1,11 +1,15 @@
 package nl.tudelft.jpacman.npc.ghost;
 
+import nl.tudelft.jpacman.board.Direction;
 import nl.tudelft.jpacman.npc.Ghost;
 import nl.tudelft.jpacman.npc.ai.BlinkyAi;
 import nl.tudelft.jpacman.npc.ai.ClydeAi;
 import nl.tudelft.jpacman.npc.ai.InkyAi;
 import nl.tudelft.jpacman.npc.ai.PinkyAi;
 import nl.tudelft.jpacman.sprite.PacManSprites;
+import nl.tudelft.jpacman.sprite.Sprite;
+
+import java.util.Map;
 
 /**
  * Factory that creates ghosts.
@@ -19,6 +23,7 @@ public class GhostFactory {
      */
     private final PacManSprites sprites;
 
+    private final Map<Direction, Sprite> fearSprite;
     /**
      * Creates a new ghost factory.
      *
@@ -26,6 +31,7 @@ public class GhostFactory {
      */
     public GhostFactory(PacManSprites spriteStore) {
         this.sprites = spriteStore;
+        this.fearSprite = sprites.getFearedGhostSprite();
     }
 
     /**
@@ -35,7 +41,7 @@ public class GhostFactory {
      * @return A new Blinky.
      */
     public Ghost createBlinky() {
-        Blinky blinky = new Blinky(sprites.getGhostSprite(GhostColor.RED), sprites.getFearedGhostSprite());
+        Blinky blinky = new Blinky(sprites.getGhostSprite(GhostColor.RED), fearSprite);
         blinky.addAi(new BlinkyAi(blinky));
         return blinky;
     }
@@ -47,7 +53,7 @@ public class GhostFactory {
      * @return A new Pinky.
      */
     public Ghost createPinky() {
-        Pinky pinky = new Pinky(sprites.getGhostSprite(GhostColor.PINK), sprites.getFearedGhostSprite());
+        Pinky pinky = new Pinky(sprites.getGhostSprite(GhostColor.PINK), fearSprite);
         pinky.addAi(new PinkyAi(pinky));
         return pinky;
     }
@@ -59,7 +65,7 @@ public class GhostFactory {
      * @return A new Inky.
      */
     public Ghost createInky() {
-        Inky inky = new Inky(sprites.getGhostSprite(GhostColor.CYAN), sprites.getFearedGhostSprite());
+        Inky inky = new Inky(sprites.getGhostSprite(GhostColor.CYAN), fearSprite);
         inky.addAi(new InkyAi(inky));
         return inky;
     }
@@ -71,7 +77,7 @@ public class GhostFactory {
      * @return A new Clyde.
      */
     public Ghost createClyde() {
-        Clyde clyde = new Clyde(sprites.getGhostSprite(GhostColor.ORANGE), sprites.getFearedGhostSprite());
+        Clyde clyde = new Clyde(sprites.getGhostSprite(GhostColor.ORANGE), fearSprite);
         clyde.addAi(new ClydeAi(clyde));
         return clyde;
     }

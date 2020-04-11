@@ -101,4 +101,12 @@ public abstract class Game implements LevelObserver {
     public void levelLost() {
         stop();
     }
+
+    public Player getSinglePlayer() {
+        List<Player> players = getPlayers();
+        if (players.isEmpty()) {
+            throw new IllegalArgumentException("Game has 0 players.");
+        }
+        return players.get(0);
+    }
 }

@@ -16,7 +16,7 @@ import java.util.List;
  */
 @SuppressWarnings("PMD.TooManyMethods")
 public class Level {
-    private LevelFunctions levelProduct;
+    private LevelCore levelProduct;
 
     /**
      * The board of this level.
@@ -33,7 +33,7 @@ public class Level {
      */
     public Level(Board board, List<Ghost> ghosts, List<Square> startPositions,
                  CollisionMap collisionMap) {
-        this.levelProduct = new LevelFunctions(this, startPositions, collisionMap);
+        this.levelProduct = new LevelCore(this, startPositions, collisionMap);
         assert board != null;
         assert ghosts != null;
         assert startPositions != null;

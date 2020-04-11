@@ -2,21 +2,12 @@ package nl.tudelft.jpacman;
 
 import java.awt.event.KeyEvent;
 import java.io.IOException;
-import java.util.List;
 
-import nl.tudelft.jpacman.board.BoardFactory;
 import nl.tudelft.jpacman.board.Direction;
 import nl.tudelft.jpacman.game.Game;
 import nl.tudelft.jpacman.game.GameFactory;
 import nl.tudelft.jpacman.level.Level;
-import nl.tudelft.jpacman.level.LevelFactory;
-import nl.tudelft.jpacman.level.MapParser;
-import nl.tudelft.jpacman.level.Player;
-import nl.tudelft.jpacman.level.PlayerFactory;
-import nl.tudelft.jpacman.npc.ghost.GhostFactory;
-import nl.tudelft.jpacman.sprite.PacManSprites;
 import nl.tudelft.jpacman.ui.Action;
-import nl.tudelft.jpacman.ui.PacManUI;
 import nl.tudelft.jpacman.ui.PacManUiBuilder;
 
 /**
@@ -69,16 +60,8 @@ public class Launcher extends Core{
     private Action moveTowardsDirection(Direction direction) {
         return () -> {
             assert getGame() != null;
-            getGame().move(getSinglePlayer(getGame()), direction);
+            getGame().move(getGame().getSinglePlayer(), direction);
         };
-    }
-
-    private Player getSinglePlayer(final Game game) {
-        List<Player> players = game.getPlayers();
-        if (players.isEmpty()) {
-            throw new IllegalArgumentException("Game has 0 players.");
-        }
-        return players.get(0);
     }
 
     /**

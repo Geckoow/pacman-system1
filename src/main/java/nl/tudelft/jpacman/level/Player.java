@@ -1,10 +1,16 @@
 package nl.tudelft.jpacman.level;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import nl.tudelft.jpacman.board.Direction;
+import nl.tudelft.jpacman.board.Square;
 import nl.tudelft.jpacman.board.Unit;
+import nl.tudelft.jpacman.npc.Ghost;
 import nl.tudelft.jpacman.sprite.AnimatedSprite;
 import nl.tudelft.jpacman.sprite.Sprite;
 
@@ -143,6 +149,98 @@ public class Player extends Unit {
     }
 
     public void collide(Unit collidedOn, PlayerCollisions playerCollisions) {
-        playerCollisions.playerColliding(this, collidedOn);
+        playerCollisions.versus.playerColliding(this, collidedOn);
+    }
+
+    int getTimer() {
+        int timer = 7;
+        if(getPowerPillEaten() < 3)
+            timer = 5;
+        return timer;
+    }
+
+    /**
+     * Actual case of player bumping into ghost or vice versa.
+     *
+     * @param ghost The ghost involved in the collision.
+     * @param playerCollisionsEffects
+     */
+    public void playerVersusGhost(Ghost ghost, PlayerCollisionsEffects playerCollisionsEffects) {
+        if(ghost.isScared() == false)
+            setAlive(false);
+        else{
+            int kill = getKill();
+            setKill(kill+1);
+            addPoints((int) (Math.pow(2, getKill())*100));
+            ghost.leaveSquare();
+
+            Square s = playerCollisionsEffects.getBoard().getGhostRespawn();
+            ghost.occupy(s);
+            playerCollisionsEffects.getBoard().getBoard()[playerCollisionsEffects.getBoard().getHeight()/2][playerCollisionsEffects.getBoard().getWidth()/2] = s;
+            ghost.reverseScared();
+            //ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+
+            //executorService.schedule(new RespawnGhostTask(executorService, ghost), 5, TimeUnit.SECONDS);
+        }
+    }
+
+    /**
+     * Actual case of player consuming a powerpill.
+     *
+     * @param powerPill The powerpill involved in the collision.
+     * @param playerCollisionsEffects
+     */
+    public void playerVersusPowerPill(PowerPill powerPill, PlayerCollisionsEffects playerCollisionsEffects){
+        powerPill.leaveSquare();
+        addPoints(powerPill.getValue());
+        for(int i = 0; i < playerCollisionsEffects.getGhosts().size(); i++){
+            playerCollisionsEffects.getGhosts().get(i).scared();
+        }
+        int timer = getTimer();
+        ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+
+        executorService.schedule(new PowerPillTask(executorService, this, playerCollisionsEffects.getGhosts()), timer, TimeUnit.SECONDS);
+
+    }
+    /**
+     * A task that moves an NPC and reschedules itself after it finished.
+     *
+     * @author Jeroen Roosen
+     */
+    private final class PowerPillTask implements Runnable {
+
+        /**
+         * The service executing the task.
+         */
+        private final ScheduledExecutorService service;
+
+        /**
+         * The player to move.
+         */
+        private final List<Ghost> ghosts;
+
+        private final Player player;
+
+        /**
+         * Creates a new task.
+         *
+         * @param service
+         *            The service that executes the task.
+         * @param ghosts
+         *            The NPC to move.
+         */
+        PowerPillTask(ScheduledExecutorService service, Player player, List<Ghost> ghosts) {
+            this.service = service;
+            this.player = player;
+            this.ghosts = ghosts;
+        }
+
+        @Override
+        public void run() {
+            for(int i = 0; i < ghosts.size(); i++){
+                ghosts.get(i).reverseScared();
+            }
+            player.setKill(0);
+        }
     }
 }
