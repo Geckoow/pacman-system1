@@ -68,14 +68,19 @@ public class ScorePanel extends JPanel {
      */
     protected void refresh() {
         for (Map.Entry<Player, JLabel> entry : scoreLabels.entrySet()) {
-            Player player = entry.getKey();
-            String score = "";
-            if (!player.isAlive()) {
-                score = "You died. ";
-            }
-            score += scoreFormatter.format(player);
+            String score = getString(entry);
             entry.getValue().setText(score);
         }
+    }
+
+    private String getString(Map.Entry<Player, JLabel> entry) {
+        Player player = entry.getKey();
+        String score = "";
+        if (!player.isAlive()) {
+            score = "You died. ";
+        }
+        score += scoreFormatter.format(player);
+        return score;
     }
 
     /**

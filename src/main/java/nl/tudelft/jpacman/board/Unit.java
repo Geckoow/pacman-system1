@@ -5,14 +5,10 @@ import nl.tudelft.jpacman.sprite.Sprite;
 /**
  * A unit that can be placed on a {@link Square}.
  *
- * @author Jeroen Roosen 
+ * @author Jeroen Roosen
  */
 public abstract class Unit {
-
-    /**
-     * The square this unit is currently occupying.
-     */
-    private Square square;
+    private UnitSquare unitSquare = new UnitSquare();
 
     /**
      * The direction this unit is facing.
@@ -28,6 +24,7 @@ public abstract class Unit {
 
     /**
      * Sets this unit to face the new direction.
+     *
      * @param newDirection The new direction this unit is facing.
      */
     public void setDirection(Direction newDirection) {
@@ -36,6 +33,7 @@ public abstract class Unit {
 
     /**
      * Returns the current direction this unit is facing.
+     *
      * @return The current direction this unit is facing.
      */
     public Direction getDirection() {
@@ -49,9 +47,7 @@ public abstract class Unit {
      * @return The square this unit is currently occupying.
      */
     public Square getSquare() {
-        assert invariant();
-        assert square != null;
-        return square;
+        return unitSquare.getSquare(this);
     }
 
     /**
@@ -60,36 +56,24 @@ public abstract class Unit {
      * @return True iff the unit is occupying a square at the moment.
      */
     public boolean hasSquare() {
-        return square != null;
+        return unitSquare.hasSquare();
     }
 
     /**
      * Occupies the target square iff this unit is allowed to as decided by
      * {@link Square#isAccessibleTo(Unit)}.
      *
-     * @param target
-     *            The square to occupy.
+     * @param target The square to occupy.
      */
     public void occupy(Square target) {
-        assert target != null;
-
-        if (square != null) {
-            square.remove(this);
-        }
-        square = target;
-        target.put(this);
-        assert invariant();
+        unitSquare.occupy(target, this);
     }
 
     /**
      * Leaves the currently occupying square, thus removing this unit from the board.
      */
     public void leaveSquare() {
-        if (square != null) {
-            square.remove(this);
-            square = null;
-        }
-        assert invariant();
+        unitSquare.leaveSquare(this);
     }
 
     /**
@@ -97,11 +81,11 @@ public abstract class Unit {
      * one of its occupiers.
      *
      * @return <code>true</code> if the square this unit is occupying has this
-     *         unit listed as one of its occupiers, or if this unit is currently
-     *         not occupying any square.
+     * unit listed as one of its occupiers, or if this unit is currently
+     * not occupying any square.
      */
     protected boolean invariant() {
-        return square == null || square.getOccupants().contains(this);
+        return unitSquare.invariant(this);
     }
 
     /**
@@ -119,7 +103,7 @@ public abstract class Unit {
      */
     public Square squaresAheadOf(int amountToLookAhead) {
         Direction targetDirection = this.getDirection();
-        Square destination = this.getSquare();
+        Square destination = unitSquare.getSquare(this);
         for (int i = 0; i < amountToLookAhead; i++) {
             destination = destination.getSquareAt(targetDirection);
         }

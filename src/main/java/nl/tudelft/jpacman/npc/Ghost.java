@@ -5,7 +5,6 @@ import nl.tudelft.jpacman.board.Square;
 import nl.tudelft.jpacman.board.Unit;
 import nl.tudelft.jpacman.npc.ai.Ai;
 import nl.tudelft.jpacman.npc.ai.ScaredAi;
-import nl.tudelft.jpacman.sprite.PacManSprites;
 import nl.tudelft.jpacman.sprite.Sprite;
 
 import java.util.*;
@@ -16,6 +15,7 @@ import java.util.*;
  * @author Jeroen Roosen
  */
 public abstract class Ghost extends Unit {
+    private GhostInterval ghostInterval;
     /**
      * The sprite map, one sprite for each direction.
      */
@@ -27,16 +27,6 @@ public abstract class Ghost extends Unit {
     private final Map<Direction, Sprite> fearSprites;
 
     private Map<Direction, Sprite> sprites;
-
-    /**
-     * The base move interval of the ghost.
-     */
-    private final int moveInterval;
-
-    /**
-     * The random variation added to the {@link #moveInterval}.
-     */
-    private final int intervalVariation;
 
     /**
      * The amount of cells feared ghost wants to stay away from Pac Man.
@@ -60,6 +50,7 @@ public abstract class Ghost extends Unit {
     protected Ai ai;
 
     private String name;
+
     /**
      * Calculates the next move for this unit and returns the direction to move
      * in.
@@ -81,23 +72,24 @@ public abstract class Ghost extends Unit {
      * @param intervalVariation The variation of the interval.
      */
     protected Ghost(Map<Direction, Sprite> spriteMap, Map<Direction, Sprite> spriteMap2, int moveInterval, int intervalVariation) {
+        this.ghostInterval = new GhostInterval(intervalVariation, moveInterval);
         this.basicSprites = spriteMap;
         this.fearSprites = spriteMap2;
         this.sprites = spriteMap;
-        this.intervalVariation = intervalVariation;
-        this.moveInterval = moveInterval;
         this.scared = false;
         this.name = "ghost";
     }
-    public void addAi(Ai ai){
+
+    public void addAi(Ai ai) {
         this.ai = ai;
     }
 
-    public void scared(){
+    public void scared() {
         this.scared = true;
         addAi(new ScaredAi(this));
         this.sprites = fearSprites;
     }
+
     public abstract void reverseScared();
 
     public boolean isScared() {
@@ -127,7 +119,7 @@ public abstract class Ghost extends Unit {
      * @return The suggested delay between moves in milliseconds.
      */
     public long getInterval() {
-        return this.moveInterval + new Random().nextInt(this.intervalVariation);
+        return ghostInterval.getInterval();
     }
 
     public static int getFEARNESS() {

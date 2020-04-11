@@ -24,7 +24,6 @@ public class PelletFactory {
 
     public Pellet createFruit() {
         int rand = (int) (Math.random() * 5);
-        System.out.println(rand);
         switch (rand) {
             case 0:
                 return createApple();
