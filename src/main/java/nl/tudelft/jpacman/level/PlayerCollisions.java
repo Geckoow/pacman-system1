@@ -43,21 +43,10 @@ public class PlayerCollisions implements CollisionMap {
     }
     @Override
     public void collide(Unit mover, Unit collidedOn) {
-        if (mover instanceof Player) {
-            playerColliding((Player) mover, collidedOn);
-        }
-        else if (mover instanceof Ghost) {
-            ghostColliding((Ghost) mover, collidedOn);
-        }
-        else if (mover instanceof Pellet) {
-            pelletColliding((Pellet) mover, collidedOn);
-        }
-        else if(mover instanceof PowerPill){
-            powerPillColliding((PowerPill) mover, collidedOn);
-        }
+        mover.collide(collidedOn, this);
     }
 
-    private void playerColliding(Player player, Unit collidedOn) {
+    public void playerColliding(Player player, Unit collidedOn) {
         if (collidedOn instanceof Ghost) {
             versus.playerVersusGhost(player, (Ghost) collidedOn);
         }
@@ -69,19 +58,19 @@ public class PlayerCollisions implements CollisionMap {
         }
     }
 
-    private void ghostColliding(Ghost ghost, Unit collidedOn) {
+    public void ghostColliding(Ghost ghost, Unit collidedOn) {
         if (collidedOn instanceof Player) {
             versus.playerVersusGhost((Player) collidedOn, ghost);
         }
     }
 
-    private void pelletColliding(Pellet pellet, Unit collidedOn) {
+    public void pelletColliding(Pellet pellet, Unit collidedOn) {
         if (collidedOn instanceof Player) {
             versus.playerVersusPellet((Player) collidedOn, pellet);
         }
     }
 
-    private void powerPillColliding(PowerPill powerPill, Unit collidedOn) {
+    public void powerPillColliding(PowerPill powerPill, Unit collidedOn) {
         if(collidedOn instanceof Player){
             versus.playerVersusPowerPill((Player) collidedOn, powerPill);
         }

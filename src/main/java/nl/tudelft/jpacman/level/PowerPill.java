@@ -36,4 +36,8 @@ public class PowerPill extends Unit {
     public Sprite getSprite() {
         return image;
     }
+
+    public void collide(Unit collidedOn, PlayerCollisions playerCollisions) {
+        playerCollisions.powerPillColliding(this, collidedOn);
+    }
 }
