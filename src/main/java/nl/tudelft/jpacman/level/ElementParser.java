@@ -64,16 +64,15 @@ public class ElementParser {
             List<Ghost> ghosts = new ArrayList<>();
             List<Square> startPositions = new ArrayList<>();
 
-            makeGrid(map, width, height, grid, ghosts, startPositions);
+            makeGrid(map, grid, ghosts, startPositions);
 
             Board board = boardCreator.createBoard(grid);
             return levelCreator.createLevel(board, ghosts, startPositions);
         }
 
-        private void makeGrid(char[][] map, int width, int height,
-                              Square[][] grid, List<Ghost> ghosts, List<Square> startPositions) {
-            for (int x = 0; x < width; x++) {
-                for (int y = 0; y < height; y++) {
+        private void makeGrid(char[][] map, Square[][] grid, List<Ghost> ghosts, List<Square> startPositions) {
+            for (int x = 0; x < map.length; x++) {
+                for (int y = 0; y < map[0].length; y++) {
                     char c = map[x][y];
                     addSquare(grid, ghosts, startPositions, x, y, c);
                 }

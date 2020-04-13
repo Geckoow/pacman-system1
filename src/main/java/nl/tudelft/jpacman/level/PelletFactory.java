@@ -8,6 +8,14 @@ public class PelletFactory {
      */
     private final PacManSprites sprites;
 
+    private final int pellet_value = LevelFactory.getPelletValue();
+
+    private final int fruit_value = LevelFactory.getFruitValue();
+
+    private final int power_value = LevelFactory.getPowerpillValue();
+
+    private final int FRUIT_NUMBER = 5;
+
     public PelletFactory(PacManSprites spriteStore) {
         this.sprites = spriteStore;
     }
@@ -23,7 +31,7 @@ public class PelletFactory {
      */
 
     public Pellet createFruit() {
-        int rand = (int) (Math.random() * 5);
+        int rand = (int) (Math.random() * FRUIT_NUMBER);
         switch (rand) {
             case 0:
                 return createApple();
@@ -45,7 +53,7 @@ public class PelletFactory {
      * @return The new pellet.
      */
     public Pellet createPellet() {
-        return new Pellet(LevelFactory.PELLET_VALUE, sprites.getPelletSprite());
+        return new Pellet(pellet_value, sprites.getPelletSprite());
     }
 
     /**
@@ -54,7 +62,7 @@ public class PelletFactory {
      * @return The new fruit.
      */
     public Pellet createApple() {
-        return new Pellet(LevelFactory.FRUIT_VALUE, sprites.getAppleSprite());
+        return new Pellet(fruit_value, sprites.getAppleSprite());
     }
 
     /**
@@ -63,7 +71,7 @@ public class PelletFactory {
      * @return The new fruit.
      */
     public Pellet createCherry() {
-        return new Pellet(LevelFactory.FRUIT_VALUE, sprites.getCherrySprite());
+        return new Pellet(fruit_value, sprites.getCherrySprite());
     }
 
     /**
@@ -72,7 +80,7 @@ public class PelletFactory {
      * @return The new fruit.
      */
     public Pellet createMelon() {
-        return new Pellet(LevelFactory.FRUIT_VALUE, sprites.getMelonSprite());
+        return new Pellet(fruit_value, sprites.getMelonSprite());
     }
 
     /**
@@ -81,7 +89,7 @@ public class PelletFactory {
      * @return The new fruit.
      */
     public Pellet createOrange() {
-        return new Pellet(LevelFactory.FRUIT_VALUE, sprites.getOrangeSprite());
+        return new Pellet(fruit_value, sprites.getOrangeSprite());
     }
 
     /**
@@ -90,10 +98,10 @@ public class PelletFactory {
      * @return The new fruit.
      */
     public Pellet createStrawberry() {
-        return new Pellet(LevelFactory.FRUIT_VALUE, sprites.getStrawberrySprite());
+        return new Pellet(fruit_value, sprites.getStrawberrySprite());
     }
 
     public PowerPill createPowerPill() {
-        return new PowerPill(LevelFactory.POWERPILL_VALUE, sprites.getPowerPillSprite());
+        return new PowerPill(power_value, sprites.getPowerPillSprite());
     }
 }

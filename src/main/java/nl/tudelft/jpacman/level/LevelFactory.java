@@ -30,17 +30,17 @@ public class LevelFactory {
     /**
      * The default value of a pellet.
      */
-    public static final int PELLET_VALUE = 10;
+    private static final int PELLET_VALUE = 10;
 
     /**
      * The default value of a pellet.
      */
-    public static final int FRUIT_VALUE = 100;
+    private static final int FRUIT_VALUE = 100;
 
     /**
      * The default value of a powerpill.
      */
-    public static final int POWERPILL_VALUE = 50;
+    private static final int POWERPILL_VALUE = 50;
 
     /**
      * Used to cycle through the various ghost types.
@@ -87,6 +87,7 @@ public class LevelFactory {
      * @return The new ghost.
      */
     Ghost createGhost() {
+        PacManSprites ghostSprites = ghostFact.getSprites();
         ghostIndex++;
         ghostIndex %= GHOSTS;
         switch (ghostIndex) {
@@ -99,7 +100,7 @@ public class LevelFactory {
             case CLYDE:
                 return ghostFact.createClyde();
             default:
-                return new RandomGhost(fruitFactory.getSprites().getGhostSprite(GhostColor.RED), fruitFactory.getSprites().getFearedGhostSprite());
+                return new RandomGhost(ghostSprites.getGhostSprite(GhostColor.RED), ghostSprites.getFearedGhostSprite());
         }
     }
 
@@ -171,6 +172,18 @@ public class LevelFactory {
         return fruitFactory.createPowerPill();
     }
 
+    public static int getPelletValue() {
+        return PELLET_VALUE;
+    }
+
+    public static int getFruitValue() {
+        return FRUIT_VALUE;
+    }
+
+    public static int getPowerpillValue() {
+        return POWERPILL_VALUE;
+    }
+
     /**
      * Implementation of an NPC that wanders around randomly.
      *
@@ -190,13 +203,19 @@ public class LevelFactory {
          */
         RandomGhost(Map<Direction, Sprite> ghostSprite, Map<Direction, Sprite> ghostSprite2) {
             super(ghostSprite, ghostSprite2, (int) DELAY, 0);
-            addAi(new RandomAi(this));
+            this.ai = new RandomAi(this);
+        }
+
+        @Override
+        public void addAi() {
+            this.ai = new RandomAi(this);
         }
 
         public void reverseScared() {
             setScared(false);
-            addAi(new RandomAi(this));
+            addAi();
             setSprites(getBasicSprites());
         }
     }
+
 }

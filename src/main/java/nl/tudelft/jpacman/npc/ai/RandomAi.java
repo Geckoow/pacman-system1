@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.Random;
 
 public class RandomAi implements Ai {
-    public final Ghost ghost;
+    private final Ghost ghost;
     public RandomAi(Ghost ghost){
         this.ghost = ghost;
     }

@@ -9,6 +9,7 @@ import nl.tudelft.jpacman.board.Square;
 import nl.tudelft.jpacman.board.Unit;
 import nl.tudelft.jpacman.level.Player;
 import nl.tudelft.jpacman.npc.Ghost;
+import nl.tudelft.jpacman.npc.ai.Ai;
 import nl.tudelft.jpacman.npc.ai.BlinkyAi;
 import nl.tudelft.jpacman.sprite.Sprite;
 
@@ -68,10 +69,9 @@ public class Blinky extends Ghost {
         this.name = "Blinky";
     }
 
-    public void reverseScared(){
-        setScared(false);
-        addAi(new BlinkyAi(this));
-        setSprites(getBasicSprites());
+    @Override
+    public void addAi() {
+        this.ai = new BlinkyAi(this);
     }
 
 }

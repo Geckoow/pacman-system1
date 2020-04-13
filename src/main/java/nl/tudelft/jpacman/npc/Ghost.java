@@ -81,18 +81,19 @@ public abstract class Ghost extends Unit {
         this.name = "ghost";
     }
 
-    public void addAi(Ai ai) {
-        this.ai = ai;
-    }
+    public abstract void addAi();
 
     public void scared() {
         this.scared = true;
-        addAi(new ScaredAi(this));
+        this.ai = new ScaredAi(this);
         this.sprites = fearSprites;
     }
 
-    public abstract void reverseScared();
-
+    public void reverseScared(){
+        setScared(false);
+        addAi();
+        setSprites(getBasicSprites());
+    }
     public boolean isScared() {
         return scared;
     }

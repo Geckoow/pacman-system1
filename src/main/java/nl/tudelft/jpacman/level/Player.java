@@ -56,6 +56,8 @@ public class Player extends Unit {
      */
     private boolean alive;
 
+    private final int POWERPILL_NUMBER = 4;
+
     /**
      * Creates a new player with a score of 0 points.
      *
@@ -67,7 +69,7 @@ public class Player extends Unit {
     protected Player(Map<Direction, Sprite> spriteMap, AnimatedSprite deathAnimation) {
         this.score = 0;
         this.kill = 0;
-        this.powerPillEaten = 4;
+        this.powerPillEaten = POWERPILL_NUMBER;
         this.alive = true;
         this.sprites = spriteMap;
         this.deathSprite = deathAnimation;
