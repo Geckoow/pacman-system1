@@ -58,6 +58,8 @@ public class Player extends Unit {
 
     private final int POWERPILL_NUMBER = 4;
 
+    private ScheduledExecutorService powerPillEat;
+
     /**
      * Creates a new player with a score of 0 points.
      *
@@ -70,6 +72,7 @@ public class Player extends Unit {
         this.score = 0;
         this.kill = 0;
         this.powerPillEaten = POWERPILL_NUMBER;
+        this.powerPillEat = null;
         this.alive = true;
         this.sprites = spriteMap;
         this.deathSprite = deathAnimation;
@@ -195,13 +198,15 @@ public class Player extends Unit {
     public void playerVersusPowerPill(PowerPill powerPill, PlayerCollisionsEffects playerCollisionsEffects){
         powerPill.leaveSquare();
         addPoints(powerPill.getValue());
+        if(powerPillEat != null)
+            powerPillEat.shutdownNow();
         for(int i = 0; i < playerCollisionsEffects.getGhosts().size(); i++){
             playerCollisionsEffects.getGhosts().get(i).scared();
         }
         int timer = getTimer();
-        ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+        powerPillEat = Executors.newSingleThreadScheduledExecutor();
 
-        executorService.schedule(new PowerPillTask(executorService, this, playerCollisionsEffects.getGhosts()), timer, TimeUnit.SECONDS);
+        powerPillEat.schedule(new PowerPillTask(powerPillEat, this, playerCollisionsEffects.getGhosts()), timer, TimeUnit.SECONDS);
 
     }
     /**
@@ -243,6 +248,7 @@ public class Player extends Unit {
                 ghosts.get(i).reverseScared();
             }
             player.setKill(0);
+            powerPillEat = null ;
         }
     }
 }
