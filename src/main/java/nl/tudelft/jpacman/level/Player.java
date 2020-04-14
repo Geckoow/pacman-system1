@@ -179,9 +179,8 @@ public class Player extends Unit {
             addPoints((int) (Math.pow(2, getKill())*100));
             ghost.leaveSquare();
 
-            Square s = playerCollisionsEffects.getBoard().getGhostRespawn();
+            Square s = playerCollisionsEffects.getBoard().getBoard()[ghost.getStartingX()][ghost.getStartingY()];
             ghost.occupy(s);
-            playerCollisionsEffects.getBoard().getBoard()[playerCollisionsEffects.getBoard().getHeight()/2][playerCollisionsEffects.getBoard().getWidth()/2] = s;
             ghost.reverseScared();
             //ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 

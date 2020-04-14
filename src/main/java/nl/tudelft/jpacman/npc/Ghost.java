@@ -52,6 +52,9 @@ public abstract class Ghost extends Unit {
 
     private String name;
 
+    private int startingX;
+    private int startingY;
+
     /**
      * Calculates the next move for this unit and returns the direction to move
      * in.
@@ -134,6 +137,19 @@ public abstract class Ghost extends Unit {
 
     public String getName() {
         return name;
+    }
+
+    public int getStartingX() {
+        return startingX;
+    }
+
+    public int getStartingY() {
+        return startingY;
+    }
+
+    public void setPosition(int x, int y){
+        this.startingX = x;
+        this.startingY = y;
     }
 
     /**

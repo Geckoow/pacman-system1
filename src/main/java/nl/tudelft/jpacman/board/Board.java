@@ -13,7 +13,6 @@ public class Board {
      */
     private final Square[][] board;
 
-    private final Square ghostRespawn;
     /**
      * Creates a new board.
      *
@@ -25,7 +24,6 @@ public class Board {
     Board(Square[][] grid) {
         assert grid != null;
         this.board = grid;
-        this.ghostRespawn = board[getHeight()/2][getWidth()/2];
         assert invariant() : "Initial grid cannot contain null squares";
     }
 
@@ -98,7 +96,4 @@ public class Board {
         return board;
     }
 
-    public Square getGhostRespawn() {
-        return ghostRespawn;
-    }
 }

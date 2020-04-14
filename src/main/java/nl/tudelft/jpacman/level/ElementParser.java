@@ -114,7 +114,7 @@ public class ElementParser {
                     levelCreator.createPellet().occupy(pelletSquare);
                     break;
                 case 'G':
-                    Square ghostSquare = makeGhostSquare(ghosts, levelCreator.createGhost());
+                    Square ghostSquare = makeGhostSquare(ghosts, levelCreator.createGhost(), x, y);
                     grid[x][y] = ghostSquare;
                     break;
                 case 'P':
@@ -146,10 +146,11 @@ public class ElementParser {
          * @param ghost the newly created ghost to be placed
          * @return a square with the ghost on it.
          */
-        protected Square makeGhostSquare(List<Ghost> ghosts, Ghost ghost) {
+        protected Square makeGhostSquare(List<Ghost> ghosts, Ghost ghost, int startingX, int startingY) {
             Square ghostSquare = boardCreator.createGround();
             ghosts.add(ghost);
             ghost.occupy(ghostSquare);
+            ghost.setPosition(startingX, startingY);
             return ghostSquare;
         }
 
