@@ -6,6 +6,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
 import nl.tudelft.jpacman.board.Board;
 import nl.tudelft.jpacman.board.Square;
 import nl.tudelft.jpacman.npc.Ghost;
@@ -153,5 +154,18 @@ class LevelTest {
         level.registerPlayer(p2);
         level.registerPlayer(p3);
         verify(p3).occupy(square1);
+    }
+
+    @Test
+    void playerLives(){
+        Player p1 = mock(Player.class);
+        int lives = p1.getLives();
+        assert(lives == 3);
+        p1.incrementLives();
+        lives = p1.getLives();
+        assert(lives == 4);
+        p1.addPoints(10000);
+        lives = p1.getLives();
+        assert(lives == 5);
     }
 }

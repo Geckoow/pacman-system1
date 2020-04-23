@@ -45,7 +45,7 @@ public class LevelPlayerInfo {
      */
     public boolean isAnyPlayerAlive() {
         for (Player player : players) {
-            if (player.isAlive()) {
+            if (player.getLives() > 0) {
                 return true;
             }
         }

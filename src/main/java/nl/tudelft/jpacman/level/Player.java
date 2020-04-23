@@ -30,6 +30,11 @@ public class Player extends Unit {
 
     private int powerPillEaten;
 
+    private int lives = 3;
+
+    //points need to get extra life.
+    private int extralifePoints = 10000;
+
     /**
      * The variation in intervals, this makes the ghosts look more dynamic and
      * less predictable.
@@ -125,6 +130,16 @@ public class Player extends Unit {
         this.kill = kill;
     }
 
+    /**
+     * @return the numbers of lives.
+     */
+    public int getLives(){ return this.lives;}
+
+    /**
+     * Add one lives.
+     */
+    public void incrementLives(){lives ++;}
+
     @Override
     public Sprite getSprite() {
         if (isAlive()) {
@@ -150,7 +165,11 @@ public class Player extends Unit {
      *            has.
      */
     public void addPoints(int points) {
+        int lastScore = score;
         score += points;
+        if((lastScore % extralifePoints)+points >= extralifePoints){
+            this.incrementLives();
+        }
     }
 
     public void collide(Unit collidedOn, PlayerCollisions playerCollisions) {
@@ -171,9 +190,9 @@ public class Player extends Unit {
      * @param playerCollisionsEffects
      */
     public void playerVersusGhost(Ghost ghost, PlayerCollisionsEffects playerCollisionsEffects) {
-        if(ghost.isScared() == false)
-            setAlive(false);
-        else{
+        if(ghost.isScared() == false) {
+            respawn(playerCollisionsEffects);
+        }else{
             int kill = getKill();
             setKill(kill+1);
             addPoints((int) (Math.pow(2, getKill())*100));
@@ -185,6 +204,25 @@ public class Player extends Unit {
             //ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
             //executorService.schedule(new RespawnGhostTask(executorService, ghost), 5, TimeUnit.SECONDS);
+        }
+    }
+
+    /**
+     * Respawn the player in a safe place if he still lives. Otherwise kill him.
+     * @param playerCollisionsEffects
+     */
+    public void respawn(PlayerCollisionsEffects playerCollisionsEffects){
+        if(lives > 1){
+            setAlive(false);
+            lives --;
+            leaveSquare();
+
+            Square s = playerCollisionsEffects.getBoard().findSafeSquare(this);
+            occupy(s);
+            setAlive(true);
+        }else{
+            lives --;
+            setAlive(false);
         }
     }
 

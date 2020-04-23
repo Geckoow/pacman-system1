@@ -1,6 +1,12 @@
 package nl.tudelft.jpacman.board;
 
 
+import nl.tudelft.jpacman.level.Pellet;
+import nl.tudelft.jpacman.level.Player;
+import nl.tudelft.jpacman.npc.Ghost;
+
+import java.util.Random;
+
 /**
  * A top-down view of a matrix of {@link Square}s.
  *
@@ -12,6 +18,8 @@ public class Board {
      * The grid of squares with board[x][y] being the square at column x, row y.
      */
     private final Square[][] board;
+
+    private int distanceOfWall = 4;
 
     /**
      * Creates a new board.
@@ -40,6 +48,84 @@ public class Board {
             }
         }
         return true;
+    }
+
+    /**
+     * draw a int
+     * @param min min int
+     * @param max max int
+     * @return a random int
+     */
+    public int randomPlace(int min, int max){
+        Random rand = new Random();
+        return rand.nextInt((max-min)+1)+min;
+    }
+
+    /**
+     *return a square at a distance safe of ghost.
+     */
+    public Square findSafeSquare(Unit n){
+        Square safe = board[randomPlace(0,getWidth()-1)][randomPlace(0,getHeight()-1)];
+        while(!noGhost(safe, n, distanceOfWall) || !safe.isAccessibleTo(n) || !accessibleCoins(safe, n)){
+            safe = board[randomPlace(0,getWidth()-1)][randomPlace(0,getHeight()-1)];
+        }
+        return safe;
+    }
+
+    /**
+     * recursive search to find out if there are ghost.
+     * @param s square where to look.
+     * @param num how many square to look.
+     * @return true if there is no ghost in < num square. false otherwise.
+     */
+    public boolean noGhost(Square s, Unit n, int num){
+        if(s != null){
+            if(!s.isAccessibleTo(n)){
+                return true;
+            }else{
+                for(Unit occupant: s.getOccupants()){
+                    if(occupant instanceof Ghost){
+                        return false;
+                    }
+                }
+                if(num == 0){
+                    return true;
+                }else{
+                    return(noGhost(s.getSquareAt(Direction.EAST), n,num-1)&&
+                    noGhost(s.getSquareAt(Direction.WEST), n,num-1)&&
+                        noGhost(s.getSquareAt(Direction.NORTH), n,num-1)&&
+                        noGhost(s.getSquareAt(Direction.SOUTH), n,num-1));
+                }
+            }
+        }else{
+            return true;
+        }
+    }
+
+    /**
+     * Find if it's possible to access to a coin from the square S
+     * @param s square
+     * @param n Unit
+     * @return true if it's possible to fin a pellet, false otherwise.
+     */
+    public boolean accessibleCoins(Square s, Unit n){
+        if(s != null){
+            if(s.isAccessibleTo(n)) {
+                for (Unit elem : s.getOccupants()) {
+                    if (elem instanceof Pellet) {
+                        return true;
+                    }
+                }
+                return (accessibleCoins(s.getSquareAt(Direction.EAST),n) &&
+                    accessibleCoins(s.getSquareAt(Direction.WEST),n) &&
+                    accessibleCoins(s.getSquareAt(Direction.SOUTH),n) &&
+                    accessibleCoins(s.getSquareAt(Direction.NORTH),n));
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        }
     }
 
     /**
