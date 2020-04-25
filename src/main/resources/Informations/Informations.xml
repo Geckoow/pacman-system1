@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><LevelInformation>
+    <SimpleLevel Score="0">Begining.tmx</SimpleLevel>
+    <SimpleLevel Score="0">littleMaze.tmx</SimpleLevel>
+    <SimpleLevel Score="0">MediumMaze.tmx</SimpleLevel>
+    <SimpleLevel Score="0">X.tmx</SimpleLevel>
+    <SimpleLevel Score="0">TheS.tmx</SimpleLevel>
+    <SimpleLevel Score="0">BigMaze.tmx</SimpleLevel>
+    <SimpleLevel Score="0">Bridge.tmx</SimpleLevel>
+    <SimpleLevel Score="0">Circle.tmx</SimpleLevel>
+    <SimpleLevel Score="0">Apple.tmx</SimpleLevel>
+    <SimpleLevel Score="0">Gold.tmx</SimpleLevel>
+    <SimpleLevel Score="0">Prison.tmx</SimpleLevel>
+    <SimpleLevel Score="0">TinyMaze.tmx</SimpleLevel>
+
+    <Campaign name="First Step">
+        <Level Score="0">Begining.tmx</Level>
+        <Level Score="0">littleMaze.tmx</Level>
+        <Level Score="0">MediumMaze.tmx</Level>
+        <Level Score="0">BigMaze.tmx</Level>
+    </Campaign>
+    <Campaign name="Step by Step">
+        <Level Score="0">Bridge.tmx</Level>
+        <Level Score="0">Prison.tmx</Level>
+        <Level Score="0">Gold.tmx</Level>
+
+        <Level Score="0">TinyMaze.tmx</Level>
+    </Campaign>
+    <Campaign name="Form and letter">
+        <Level Score="0">X.tmx</Level>
+        <Level Score="0">TheS.tmx</Level>
+        <Level Score="0">Circle.tmx</Level>
+        <Level Score="0">Apple.tmx</Level>
+    </Campaign>
+</LevelInformation>
