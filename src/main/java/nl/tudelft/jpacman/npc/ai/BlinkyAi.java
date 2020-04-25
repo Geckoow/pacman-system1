@@ -7,13 +7,11 @@ import nl.tudelft.jpacman.level.Player;
 import nl.tudelft.jpacman.npc.ghost.Blinky;
 import nl.tudelft.jpacman.npc.ghost.Navigation;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 public class BlinkyAi implements Ai {
-    private Blinky blinky;
+    private final Blinky blinky;
 
     public BlinkyAi(Blinky blinky) {
         this.blinky = blinky;

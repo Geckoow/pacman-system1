@@ -1,16 +1,10 @@
 package nl.tudelft.jpacman.level;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import nl.tudelft.jpacman.PacmanConfigurationException;
 import nl.tudelft.jpacman.board.Board;
 import nl.tudelft.jpacman.board.BoardFactory;
 import nl.tudelft.jpacman.board.Square;
 import nl.tudelft.jpacman.npc.Ghost;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,6 +58,7 @@ public class ElementParser {
             List<Ghost> ghosts = new ArrayList<>();
             List<Square> startPositions = new ArrayList<>();
 
+            Checker.checkMap(map);
             makeGrid(map, grid, ghosts, startPositions);
 
             Board board = boardCreator.createBoard(grid);

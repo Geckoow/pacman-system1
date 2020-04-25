@@ -4,8 +4,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import nl.tudelft.jpacman.PacmanConfigurationException;
 import nl.tudelft.jpacman.board.BoardFactory;
@@ -17,11 +19,6 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
  * @author Jeroen Roosen
  */
 public class MapParser extends ElementParser {
-
-    /**
-     * The factory that creates the levels.
-     */
-    private final LevelFactory levelCreator;
 
     /**
      * The factory that creates the squares and board.
@@ -38,7 +35,6 @@ public class MapParser extends ElementParser {
      */
     public MapParser(LevelFactory levelFactory, BoardFactory boardFactory) {
         super(levelFactory, boardFactory);
-        this.levelCreator = levelFactory;
         this.boardCreator = boardFactory;
     }
 
@@ -66,6 +62,7 @@ public class MapParser extends ElementParser {
                 map[x][y] = text.get(y).charAt(x);
             }
         }
+
         return parseMap(map);
     }
 
@@ -112,7 +109,7 @@ public class MapParser extends ElementParser {
      */
     public Level parseMap(InputStream source) throws IOException {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(
-            source, "UTF-8"))) {
+            source, StandardCharsets.UTF_8))) {
             List<String> lines = new ArrayList<>();
             while (reader.ready()) {
                 lines.add(reader.readLine());
@@ -134,11 +131,19 @@ public class MapParser extends ElementParser {
     @SuppressFBWarnings(value = "OBL_UNSATISFIED_OBLIGATION",
                         justification = "try with resources always cleans up")
     public Level parseMap(String mapName) throws IOException {
-        try (InputStream boardStream = MapParser.class.getResourceAsStream(mapName)) {
-            if (boardStream == null) {
-                throw new PacmanConfigurationException("Could not get resource for: " + mapName);
+        String[] extension = mapName.split("\\.");
+        mapName = "/Map/"+ mapName;
+        if(extension[1].equals("txt")) {
+            try (InputStream boardStream = MapParser.class.getResourceAsStream(mapName)) {
+                if (boardStream == null) {
+                    throw new PacmanConfigurationException("Could not get resource for: " + mapName);
+                }
+                return parseMap(boardStream);
             }
-            return parseMap(boardStream);
+        }else if(extension[1].equals("tmx")){
+            return parseMap(Objects.requireNonNull(XMLParser.ParseMap(mapName)));
+        }else{
+            throw new PacmanConfigurationException("extention: " + extension[1]+" ,unknown");
         }
     }
 

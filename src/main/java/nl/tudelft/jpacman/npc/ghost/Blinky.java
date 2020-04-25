@@ -1,15 +1,9 @@
 package nl.tudelft.jpacman.npc.ghost;
 
-import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import nl.tudelft.jpacman.board.Direction;
-import nl.tudelft.jpacman.board.Square;
-import nl.tudelft.jpacman.board.Unit;
-import nl.tudelft.jpacman.level.Player;
 import nl.tudelft.jpacman.npc.Ghost;
-import nl.tudelft.jpacman.npc.ai.Ai;
 import nl.tudelft.jpacman.npc.ai.BlinkyAi;
 import nl.tudelft.jpacman.sprite.Sprite;
 
@@ -60,7 +54,7 @@ public class Blinky extends Ghost {
      * @param spriteMap
      *            The sprites for this ghost.
      */
-    private String name;
+    private final String name;
 
     // TODO Blinky should speed up when there are a few pellets left, but he
     // has no way to find out how many there are.

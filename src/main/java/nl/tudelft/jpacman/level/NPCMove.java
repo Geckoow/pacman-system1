@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 public class NPCMove {
 
-    private Level level;
+    private final Level level;
 
     public NPCMove(Level level){
         this.level = level;

@@ -21,7 +21,7 @@ public class PlayerCollisions implements CollisionMap {
 
     private final List<Ghost> ghosts;
     private final Board board;
-    PlayerCollisionsEffects versus;
+    final PlayerCollisionsEffects versus;
 
     public PlayerCollisions(List<Ghost> ghosts, Board board){
         this.ghosts = ghosts;

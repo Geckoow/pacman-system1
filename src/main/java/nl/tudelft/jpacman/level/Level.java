@@ -16,7 +16,7 @@ import java.util.List;
  */
 @SuppressWarnings("PMD.TooManyMethods")
 public class Level {
-    private LevelCore levelProduct;
+    private final LevelCore levelProduct;
 
     /**
      * The board of this level.

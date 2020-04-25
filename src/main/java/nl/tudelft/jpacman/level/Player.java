@@ -28,12 +28,14 @@ public class Player extends Unit {
 
     private int kill;
 
-    private int powerPillEaten;
+    private final int powerPillEaten;
 
     private int lives = 3;
 
+    private int lossLives = 0;
+
     //points need to get extra life.
-    private int extralifePoints = 10000;
+    private final int extralifePoints = 10000;
 
     /**
      * The variation in intervals, this makes the ghosts look more dynamic and
@@ -82,6 +84,10 @@ public class Player extends Unit {
         this.sprites = spriteMap;
         this.deathSprite = deathAnimation;
         deathSprite.setAnimating(false);
+    }
+
+    public int livesLoss(){
+        return lossLives;
     }
 
     /**
@@ -134,6 +140,14 @@ public class Player extends Unit {
      * @return the numbers of lives.
      */
     public int getLives(){ return this.lives;}
+
+    /**
+     * Change lives of player
+     * @param lives lives of player.
+     */
+    public void setLives(int lives){
+        this.lives = lives;
+    }
 
     /**
      * Add one lives.
@@ -190,7 +204,7 @@ public class Player extends Unit {
      * @param playerCollisionsEffects
      */
     public void playerVersusGhost(Ghost ghost, PlayerCollisionsEffects playerCollisionsEffects) {
-        if(ghost.isScared() == false) {
+        if(!ghost.isScared()) {
             respawn(playerCollisionsEffects);
         }else{
             int kill = getKill();
@@ -215,6 +229,7 @@ public class Player extends Unit {
         if(lives > 1){
             setAlive(false);
             lives --;
+            lossLives ++;
             leaveSquare();
 
             Square s = playerCollisionsEffects.getBoard().findSafeSquare(this);
@@ -222,6 +237,7 @@ public class Player extends Unit {
             setAlive(true);
         }else{
             lives --;
+            lossLives ++;
             setAlive(false);
         }
     }

@@ -13,7 +13,7 @@ import java.util.Map;
  * @author Jeroen Roosen
  */
 public abstract class Square {
-    private SquareOccupant squareOccupant;
+    private final SquareOccupant squareOccupant;
 
     /**
      * The collection of squares adjacent to this square.

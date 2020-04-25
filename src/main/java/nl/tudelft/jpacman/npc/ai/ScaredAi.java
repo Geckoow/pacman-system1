@@ -31,8 +31,8 @@ public class ScaredAi implements Ai {
         List<Direction> path = Navigation.shortestPath(ghost.getSquare(), target, ghost);
         if (path != null && !path.isEmpty()) {
             Direction direction = path.get(0);
-            if (path.size() <= ghost.getFEARNESS()) {
-                return Optional.ofNullable(ghost.getOPPOSITES().get(direction));
+            if (path.size() <= Ghost.getFEARNESS()) {
+                return Optional.ofNullable(Ghost.getOPPOSITES().get(direction));
             }
             return Optional.of(direction);
         }

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LevelPlayerInfo {
-    private LevelRegisterPlayer levelRegisterPlayer;
+    private final LevelRegisterPlayer levelRegisterPlayer;
     /**
      * The players on this level.
      */

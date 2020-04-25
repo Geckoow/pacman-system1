@@ -4,6 +4,7 @@ import nl.tudelft.jpacman.board.Direction;
 import nl.tudelft.jpacman.board.Square;
 import nl.tudelft.jpacman.board.Unit;
 import nl.tudelft.jpacman.level.Player;
+import nl.tudelft.jpacman.npc.Ghost;
 import nl.tudelft.jpacman.npc.ghost.Clyde;
 import nl.tudelft.jpacman.npc.ghost.Navigation;
 
@@ -11,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class ClydeAi implements Ai {
-    private Clyde clyde;
+    private final Clyde clyde;
 
     public ClydeAi(Clyde clyde) {
         this.clyde = clyde;
@@ -43,8 +44,8 @@ public class ClydeAi implements Ai {
         List<Direction> path = Navigation.shortestPath(clyde.getSquare(), target, clyde);
         if (path != null && !path.isEmpty()) {
             Direction direction = path.get(0);
-            if (path.size() <= clyde.getSHYNESS()) {
-                return Optional.ofNullable(clyde.getOPPOSITES().get(direction));
+            if (path.size() <= Clyde.getSHYNESS()) {
+                return Optional.ofNullable(Ghost.getOPPOSITES().get(direction));
             }
             return Optional.of(direction);
         }

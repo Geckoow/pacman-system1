@@ -11,7 +11,7 @@ import nl.tudelft.jpacman.sprite.PacManSprites;
 import nl.tudelft.jpacman.ui.PacManUI;
 
 public class Core {
-    private CoreProduct coreProduct = new CoreProduct();
+    private final CoreProduct coreProduct = new CoreProduct();
 
     public static final String DEFAULT_MAP = "/board.txt";
     private String levelMap = DEFAULT_MAP;

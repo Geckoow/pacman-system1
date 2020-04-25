@@ -54,11 +54,9 @@ public class SpriteTest {
      * Verifies that an IOException is thrown when the resource could not be
      * loaded.
      *
-     * @throws java.io.IOException
-     *             since the sprite cannot be loaded.
      */
     @Test
-    public void resourceMissing() throws IOException {
+    public void resourceMissing() {
         assertThatThrownBy(() -> store.loadSprite("/sprite/nonexistingresource.png"))
             .isInstanceOf(IOException.class);
     }

@@ -54,7 +54,7 @@ public class ScorePanel extends JPanel {
     /**
      * The way to format the lives information.
      */
-    private ScoreFormatter livesFormatter = DEFAULT_Lives_FORMATTER;
+    private final ScoreFormatter livesFormatter = DEFAULT_Lives_FORMATTER;
 
     /**
      * Creates a new score panel with a column for each player.

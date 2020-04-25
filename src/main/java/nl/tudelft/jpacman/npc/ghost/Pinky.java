@@ -1,16 +1,9 @@
 package nl.tudelft.jpacman.npc.ghost;
 
-import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import nl.tudelft.jpacman.board.Direction;
-import nl.tudelft.jpacman.board.Square;
-import nl.tudelft.jpacman.board.Unit;
-import nl.tudelft.jpacman.level.Player;
 import nl.tudelft.jpacman.npc.Ghost;
-import nl.tudelft.jpacman.npc.ai.Ai;
-import nl.tudelft.jpacman.npc.ai.BlinkyAi;
 import nl.tudelft.jpacman.npc.ai.PinkyAi;
 import nl.tudelft.jpacman.sprite.Sprite;
 
@@ -70,7 +63,7 @@ public class Pinky extends Ghost {
         return SQUARES_AHEAD;
     }
 
-    private String name;
+    private final String name;
 
     /**
      * Creates a new "Pinky", a.k.a. "Speedy".

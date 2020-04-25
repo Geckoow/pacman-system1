@@ -32,6 +32,16 @@ public abstract class Game implements LevelObserver {
     }
 
     /**
+     * true if the game is won.
+     */
+    private boolean won = false;
+
+    /**
+     * true if game is lost.
+     */
+    private boolean lost = false;
+
+    /**
      * Starts or resumes the game.
      */
     public void start() {
@@ -59,6 +69,18 @@ public abstract class Game implements LevelObserver {
             getLevel().stop();
         }
     }
+
+    /**
+    * @return true if the game is won.
+     */
+    public boolean isWon(){
+        return won;
+    }
+
+    /**
+    * @return true if the game is lost.
+     */
+    public boolean isLost(){return lost;}
 
     /**
      * @return <code>true</code> iff the game is started and in progress.
@@ -95,11 +117,13 @@ public abstract class Game implements LevelObserver {
     @Override
     public void levelWon() {
         stop();
+        this.won = true;
     }
 
     @Override
     public void levelLost() {
         stop();
+        this.lost = true;
     }
 
     public Player getSinglePlayer() {

@@ -16,7 +16,7 @@ import java.util.*;
  * @author Jeroen Roosen
  */
 public abstract class Ghost extends Unit {
-    private GhostInterval ghostInterval;
+    private final GhostInterval ghostInterval;
     /**
      * The sprite map, one sprite for each direction.
      */
@@ -50,7 +50,7 @@ public abstract class Ghost extends Unit {
 
     protected Ai ai;
 
-    private String name;
+    private final String name;
 
     private int startingX;
     private int startingY;

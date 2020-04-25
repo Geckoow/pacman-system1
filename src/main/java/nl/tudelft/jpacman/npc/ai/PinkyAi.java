@@ -40,7 +40,7 @@ public class PinkyAi implements Ai {
             return Optional.empty();
         }
         assert player.hasSquare();
-        Square destination = player.squaresAheadOf(pinky.getSquaresAhead());
+        Square destination = player.squaresAheadOf(Pinky.getSquaresAhead());
 
         List<Direction> path = Navigation.shortestPath(pinky.getSquare(), destination, pinky);
         if (path != null && !path.isEmpty()) {

@@ -55,7 +55,7 @@ public class InkyAi implements Ai{
         }
 
         assert player.hasSquare();
-        Square playerDestination = player.squaresAheadOf(inky.getSquaresAhead());
+        Square playerDestination = player.squaresAheadOf(Inky.getSquaresAhead());
 
         List<Direction> firstHalf = Navigation.shortestPath(blinky.getSquare(),
             playerDestination, null);

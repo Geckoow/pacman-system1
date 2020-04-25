@@ -5,7 +5,6 @@ import nl.tudelft.jpacman.board.Unit;
 import nl.tudelft.jpacman.npc.Ghost;
 
 import java.util.List;
-import java.util.concurrent.ScheduledExecutorService;
 
 public class PlayerCollisionsEffects {
 

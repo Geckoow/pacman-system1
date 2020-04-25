@@ -9,7 +9,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class PlayerMove {
-    private Level level;
+    private final Level level;
 
     public PlayerMove(Level level){
         this.level = level;

@@ -10,8 +10,8 @@ import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
 
 public class LevelCoreFunctions {
-    private LevelPlayerInfo levelPlayerInfo;
-    private LevelRunning levelRunning;
+    private final LevelPlayerInfo levelPlayerInfo;
+    private final LevelRunning levelRunning;
     /**
      * The lock that ensures moves are executed sequential.
      */

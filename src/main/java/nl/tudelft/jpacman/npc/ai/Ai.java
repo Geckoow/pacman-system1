@@ -11,6 +11,6 @@ public interface Ai {
      * @return an optional containing the move or empty if the current state of the game
      * makes the ai move impossible
      */
-    public Optional<Direction> nextAiMove();
+    Optional<Direction> nextAiMove();
 }
 

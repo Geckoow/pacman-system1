@@ -13,12 +13,12 @@ import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
 
 public class LevelCore {
-    private LevelCoreFunctions levelFeatures;
+    private final LevelCoreFunctions levelFeatures;
     /**
      * The objects observing this level.
      */
     private final Set<LevelObserver> observers;
-    private Level level;
+    private final Level level;
 
     public LevelCore(Level level, List<Square> startPositions, CollisionMap collisionMap) {
         this.levelFeatures = new LevelCoreFunctions(startPositions, collisionMap);

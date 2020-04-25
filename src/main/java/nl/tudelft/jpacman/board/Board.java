@@ -2,7 +2,6 @@ package nl.tudelft.jpacman.board;
 
 
 import nl.tudelft.jpacman.level.Pellet;
-import nl.tudelft.jpacman.level.Player;
 import nl.tudelft.jpacman.npc.Ghost;
 
 import java.util.Random;
@@ -18,8 +17,6 @@ public class Board {
      * The grid of squares with board[x][y] being the square at column x, row y.
      */
     private final Square[][] board;
-
-    private int distanceOfWall = 4;
 
     /**
      * Creates a new board.
@@ -65,9 +62,15 @@ public class Board {
      *return a square at a distance safe of ghost.
      */
     public Square findSafeSquare(Unit n){
-        Square safe = board[randomPlace(0,getWidth()-1)][randomPlace(0,getHeight()-1)];
-        while(!noGhost(safe, n, distanceOfWall) || !safe.isAccessibleTo(n) || !accessibleCoins(safe, n)){
-            safe = board[randomPlace(0,getWidth()-1)][randomPlace(0,getHeight()-1)];
+        int x = randomPlace(0,getWidth()-1);
+        int y = randomPlace(0,getHeight()-1);
+        Square safe = board[x][y];
+        int distanceOfWall = 4;
+        int limitDepth = 20;
+        while(!noGhost(safe, n, distanceOfWall) || !safe.isAccessibleTo(n) || !accessibleCoins(safe, n, limitDepth)){
+            x = randomPlace(0,getWidth()-1);
+            y = randomPlace(0,getHeight()-1);
+            safe = board[x][y];
         }
         return safe;
     }
@@ -108,18 +111,19 @@ public class Board {
      * @param n Unit
      * @return true if it's possible to fin a pellet, false otherwise.
      */
-    public boolean accessibleCoins(Square s, Unit n){
-        if(s != null){
+    public boolean accessibleCoins(Square s, Unit n, int limitDepth){
+        if(s != null && limitDepth>0){
             if(s.isAccessibleTo(n)) {
                 for (Unit elem : s.getOccupants()) {
                     if (elem instanceof Pellet) {
                         return true;
                     }
                 }
-                return (accessibleCoins(s.getSquareAt(Direction.EAST),n) &&
-                    accessibleCoins(s.getSquareAt(Direction.WEST),n) &&
-                    accessibleCoins(s.getSquareAt(Direction.SOUTH),n) &&
-                    accessibleCoins(s.getSquareAt(Direction.NORTH),n));
+                limitDepth--;
+                return (accessibleCoins(s.getSquareAt(Direction.EAST),n,limitDepth) ||
+                    accessibleCoins(s.getSquareAt(Direction.WEST),n,limitDepth) ||
+                    accessibleCoins(s.getSquareAt(Direction.SOUTH),n,limitDepth) ||
+                    accessibleCoins(s.getSquareAt(Direction.NORTH),n,limitDepth));
             }else{
                 return false;
             }

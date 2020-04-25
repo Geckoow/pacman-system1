@@ -9,7 +9,7 @@ import nl.tudelft.jpacman.sprite.Sprite;
  * @author Jeroen Roosen
  */
 public abstract class Unit {
-    private UnitSquare unitSquare = new UnitSquare();
+    private final UnitSquare unitSquare = new UnitSquare();
 
     /**
      * The direction this unit is facing.

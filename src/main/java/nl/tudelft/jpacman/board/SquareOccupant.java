@@ -3,7 +3,7 @@ package nl.tudelft.jpacman.board;
 import java.util.List;
 
 public class SquareOccupant {
-    private Occupation occupation;
+    private final Occupation occupation;
     private final Square square;
 
     public SquareOccupant(Square square) {

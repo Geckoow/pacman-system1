@@ -2,10 +2,6 @@ package nl.tudelft.jpacman.npc.ghost;
 
 import nl.tudelft.jpacman.board.Direction;
 import nl.tudelft.jpacman.npc.Ghost;
-import nl.tudelft.jpacman.npc.ai.BlinkyAi;
-import nl.tudelft.jpacman.npc.ai.ClydeAi;
-import nl.tudelft.jpacman.npc.ai.InkyAi;
-import nl.tudelft.jpacman.npc.ai.PinkyAi;
 import nl.tudelft.jpacman.sprite.PacManSprites;
 import nl.tudelft.jpacman.sprite.Sprite;
 

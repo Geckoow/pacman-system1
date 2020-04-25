@@ -19,7 +19,7 @@ import java.util.Map;
  * @author Jeroen Roosen
  */
 public class LevelFactory {
-    private PelletFactory fruitFactory;
+    private final PelletFactory fruitFactory;
 
     private static final int GHOSTS = 4;
     private static final int BLINKY = 0;
