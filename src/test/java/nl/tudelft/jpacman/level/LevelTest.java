@@ -155,17 +155,4 @@ class LevelTest {
         level.registerPlayer(p3);
         verify(p3).occupy(square1);
     }
-
-    @Test
-    void playerLives(){
-        Player p1 = mock(Player.class);
-        int lives = p1.getLives();
-        assert(lives == 3);
-        p1.incrementLives();
-        lives = p1.getLives();
-        assert(lives == 4);
-        p1.addPoints(10000);
-        lives = p1.getLives();
-        assert(lives == 5);
-    }
 }
